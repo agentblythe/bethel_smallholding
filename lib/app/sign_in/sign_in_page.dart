@@ -1,6 +1,6 @@
+import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
+import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
-
-import '../../common_widgets/custom_elevated_button.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -24,8 +24,8 @@ Widget _buildContent() {
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: const <Widget>[
-        Text(
+      children: <Widget>[
+        const Text(
           "Sign in",
           textAlign: TextAlign.center,
           style: TextStyle(
@@ -33,21 +33,15 @@ Widget _buildContent() {
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
-        CustomElevatedButton(
-          child: Text(
-            "Sign in with Google",
-            style: TextStyle(
-              color: Colors.black87,
-              fontSize: 15.0,
-            ),
-          ),
+        SignInButton(
+          text: "Sign in with Google",
           color: Colors.white,
-          borderRadius: 4.0,
+          textColor: Colors.black87,
           onPressed: _signInWithGoogle,
-        )
+        ),
       ],
     ),
   );
@@ -55,4 +49,5 @@ Widget _buildContent() {
 
 void _signInWithGoogle() {
   // TODO: Auth with Google
+  print("test");
 }

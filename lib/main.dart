@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,11 +15,9 @@ class BethelSmallholdingApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bethel Smallholding',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.green,
       ),
-      home: Container(
-        color: Colors.white,
-      ),
+      home: SignInPage(),
     );
   }
 }

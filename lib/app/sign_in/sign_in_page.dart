@@ -1,4 +1,5 @@
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
+import 'package:bethel_smallholding/app/sign_in/social_sign_in_button.dart';
 import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,8 @@ Widget _buildContent() {
         const SizedBox(
           height: 48,
         ),
-        SignInButton(
+        SocialSignInButton(
+          image: "images/google-logo.png",
           text: "Sign in with Google",
           color: Colors.white,
           textColor: Colors.black87,
@@ -45,7 +47,8 @@ Widget _buildContent() {
         const SizedBox(
           height: 8,
         ),
-        SignInButton(
+        SocialSignInButton(
+          image: "images/facebook-logo.png",
           text: "Sign in with Facebook",
           color: const Color(0xFF334D92),
           textColor: Colors.white,

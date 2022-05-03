@@ -6,11 +6,11 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class SocialSignInButton extends CustomElevatedButton {
   SocialSignInButton({
-    required String image,
-    required String text,
-    required Color color,
-    required Color textColor,
-    required VoidCallback onPressed,
+    required final String image,
+    required final String text,
+    required final Color buttonColor,
+    final Color? textColor,
+    final VoidCallback? onPressed,
   }) : super(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -18,7 +18,10 @@ class SocialSignInButton extends CustomElevatedButton {
               Image.asset(image),
               Text(
                 text,
-                style: TextStyle(color: textColor, fontSize: 15.0),
+                style: TextStyle(
+                  color: textColor ?? Colors.white,
+                  fontSize: 15.0,
+                ),
               ),
               Opacity(
                 opacity: 0.0,
@@ -26,7 +29,7 @@ class SocialSignInButton extends CustomElevatedButton {
               )
             ],
           ),
-          color: color,
+          buttonColor: buttonColor,
           onPressed: onPressed,
         );
 }

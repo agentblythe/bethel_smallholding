@@ -40,7 +40,7 @@ Widget _buildContent() {
         SocialSignInButton(
           image: "images/google-logo.png",
           text: "Sign in with Google",
-          color: Colors.white,
+          buttonColor: Colors.white,
           textColor: Colors.black87,
           onPressed: _signInWithGoogle,
         ),
@@ -50,7 +50,7 @@ Widget _buildContent() {
         SocialSignInButton(
           image: "images/facebook-logo.png",
           text: "Sign in with Facebook",
-          color: const Color(0xFF334D92),
+          buttonColor: const Color(0xFF334D92),
           textColor: Colors.white,
           onPressed: _signInWithFacebook,
         ),
@@ -59,7 +59,7 @@ Widget _buildContent() {
         ),
         SignInButton(
           text: "Sign in with Email",
-          color: Colors.teal.shade700,
+          buttonColor: Colors.teal.shade700,
           textColor: Colors.white,
           onPressed: _signInWithEmail,
         ),
@@ -76,7 +76,7 @@ Widget _buildContent() {
         ),
         SignInButton(
           text: "Go Anonymous",
-          color: Colors.lime.shade300,
+          buttonColor: Colors.lime.shade300,
           textColor: Colors.black,
           onPressed: _signInAnonymously,
         ),

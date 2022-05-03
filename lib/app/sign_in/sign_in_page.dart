@@ -34,13 +34,48 @@ Widget _buildContent() {
           ),
         ),
         const SizedBox(
-          height: 8,
+          height: 48,
         ),
         SignInButton(
           text: "Sign in with Google",
           color: Colors.white,
           textColor: Colors.black87,
           onPressed: _signInWithGoogle,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        SignInButton(
+          text: "Sign in with Facebook",
+          color: const Color(0xFF334D92),
+          textColor: Colors.white,
+          onPressed: _signInWithFacebook,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        SignInButton(
+          text: "Sign in with Email",
+          color: Colors.teal.shade700,
+          textColor: Colors.white,
+          onPressed: _signInWithEmail,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        const Text(
+          "or...",
+          style: TextStyle(fontSize: 14.0, color: Colors.black),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        SignInButton(
+          text: "Go Anonymous",
+          color: Colors.lime.shade300,
+          textColor: Colors.black,
+          onPressed: _signInAnonymously,
         ),
       ],
     ),
@@ -49,5 +84,20 @@ Widget _buildContent() {
 
 void _signInWithGoogle() {
   // TODO: Auth with Google
-  print("test");
+  print("Google");
+}
+
+void _signInWithFacebook() {
+  // TODO: Auth with Facebook
+  print("Facebook");
+}
+
+void _signInWithEmail() {
+  // TODO: Auth with Email
+  print("Email");
+}
+
+void _signInAnonymously() {
+  // TODO: Anonymous
+  print("Anonymous");
 }

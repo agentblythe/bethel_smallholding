@@ -6,11 +6,13 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class SignInButton extends CustomElevatedButton {
   SignInButton({
+    Key? key,
     required final String text,
     required final Color buttonColor,
     final Color? textColor,
     final VoidCallback? onPressed,
   }) : super(
+          key: key,
           child: Text(
             text,
             style: TextStyle(

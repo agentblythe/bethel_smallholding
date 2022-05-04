@@ -15,7 +15,7 @@ class BethelSmallholdingApp extends StatelessWidget {
     return MaterialApp(
       title: 'Bethel Smallholding',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
       home: SignInPage(),
     );

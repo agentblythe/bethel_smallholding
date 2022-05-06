@@ -1,7 +1,9 @@
 import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  await Firebase.initializeApp();
   runApp(BethelSmallholdingApp());
 }
 

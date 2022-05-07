@@ -1,6 +1,7 @@
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
 import 'package:bethel_smallholding/app/sign_in/social_sign_in_button.dart';
 import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatelessWidget {
@@ -100,7 +101,7 @@ void _signInWithEmail() {
   print("Email");
 }
 
-void _signInAnonymously() {
-  // TODO: Anonymous
-  print("Anonymous");
+Future<void> _signInAnonymously() async {
+  final userCredentials = await FirebaseAuth.instance.signInAnonymously();
+  print(userCredentials.user?.uid);
 }

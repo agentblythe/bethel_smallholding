@@ -1,4 +1,4 @@
-import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
+import 'package:bethel_smallholding/app/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class BethelSmallholdingApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SignInPage(),
+      home: LandingPage(),
     );
   }
 }

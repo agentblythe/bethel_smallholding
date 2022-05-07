@@ -102,6 +102,10 @@ void _signInWithEmail() {
 }
 
 Future<void> _signInAnonymously() async {
-  final userCredentials = await FirebaseAuth.instance.signInAnonymously();
-  print(userCredentials.user?.uid);
+  try {
+    final userCredentials = await FirebaseAuth.instance.signInAnonymously();
+    print(userCredentials.user?.uid);
+  } catch (e) {
+    print("Anonymous sign-in failed with exception: ${e.toString()}");
+  }
 }

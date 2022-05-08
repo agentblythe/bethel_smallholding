@@ -1,7 +1,22 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final VoidCallback onSignOut;
+
+  const HomePage({
+    Key? key,
+    required this.onSignOut,
+  }) : super(key: key);
+
+  Future<void> _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      onSignOut();
+    } catch (e) {
+      print("Anonymous sign-in failed with exception: ${e.toString()}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +26,7 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              print("Sign Out");
+              _signOut();
             },
             child: const Text(
               "Logout",

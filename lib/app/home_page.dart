@@ -7,7 +7,21 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home Page"),
+        title: const Text("Home Page"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              print("Sign Out");
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

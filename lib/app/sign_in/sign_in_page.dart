@@ -32,9 +32,12 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-  void _signInWithGoogle() {
-    // TODO: Auth with Google
-    print("Google");
+  Future<void> _signInWithGoogle() async {
+    try {
+      await auth.signInWithGoogle();
+    } catch (e) {
+      print("Google sign-in failed with exception: ${e.toString()}");
+    }
   }
 
   void _signInWithFacebook() {

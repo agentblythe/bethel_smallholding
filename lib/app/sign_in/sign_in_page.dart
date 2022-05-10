@@ -5,12 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatelessWidget {
-  final void Function(User) onSignIn;
   final AuthBase auth;
 
   const SignInPage({
     Key? key,
-    required this.onSignIn,
     required this.auth,
   }) : super(key: key);
 
@@ -28,12 +26,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInAnonymously() async {
     try {
-      final user = await auth.signInAnonymously();
-      if (user != null) {
-        onSignIn(user);
-      } else {
-        print("User object is null");
-      }
+      await auth.signInAnonymously();
     } catch (e) {
       print("Anonymous sign-in failed with exception: ${e.toString()}");
     }

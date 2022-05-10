@@ -4,7 +4,7 @@ import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LandingPage extends StatefulWidget {
+class LandingPage extends StatelessWidget {
   final AuthBase auth;
   const LandingPage({
     Key? key,
@@ -12,40 +12,19 @@ class LandingPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LandingPage> createState() => _LandingPageState();
-}
-
-class _LandingPageState extends State<LandingPage> {
-  User? _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _updateUser(widget.auth.currentUser);
-  }
-
-  void _updateUser(User? user) {
-    setState(() {
-      _user = user;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
-      stream: widget.auth.authStateChanges(),
+      stream: auth.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final user = snapshot.data;
           if (user == null) {
             return SignInPage(
-              onSignIn: _updateUser,
-              auth: widget.auth,
+              auth: auth,
             );
           }
           return HomePage(
-            onSignOut: () => _updateUser(null),
-            auth: widget.auth,
+            auth: auth,
           );
         }
         return const Scaffold(

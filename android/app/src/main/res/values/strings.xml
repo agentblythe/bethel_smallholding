@@ -3,5 +3,5 @@
     <string name="app_name">Bethel Smallholding</string>
     <string name="facebook_app_id">1191106078359698</string>
     <string name="fb_login_protocol_scheme">fb1191106078359698</string>
-    <string name="facebook_client_token">71b9d5932524548373f11667ede71515</string>
+    <string name="facebook_client_token"></string>
 </resources>

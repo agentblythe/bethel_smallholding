@@ -1,4 +1,4 @@
-package com.example.bethel_smallholding
+package com.steveblythe.bethel_smallholding
 
 import io.flutter.embedding.android.FlutterActivity
 

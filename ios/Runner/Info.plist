@@ -49,8 +49,18 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.433205503848-lpu80kpp966v2lk1f7o72kbscome713r</string>
+				<string>fb1191106078359698</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>1191106078359698</string>
+	<key>FacebookDisplayName</key>
+	<string>Bethel Smallholding</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+  		<string>fbapi</string>
+  		<string>fb-messenger-share-api</string>
 	</array>
 </dict>
 </plist>

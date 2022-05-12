@@ -3,6 +3,7 @@ import 'package:bethel_smallholding/app/sign_in/social_sign_in_button.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 class SignInPage extends StatelessWidget {
   final AuthBase auth;
@@ -40,9 +41,12 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-  void _signInWithFacebook() {
-    // TODO: Auth with Facebook
-    print("Facebook");
+  Future<void> _signInWithFacebook() async {
+    try {
+      await auth.signInWithFacebook();
+    } catch (e) {
+      print("Facebook sign-in failed with exception: ${e.toString()}");
+    }
   }
 
   void _signInWithEmail() {

@@ -11,11 +11,22 @@ class EmailSignInForm extends StatelessWidget {
           hintText: "test@test.com",
         ),
       ),
+      const SizedBox(height: 8),
       const TextField(
         decoration: InputDecoration(
           labelText: "Password",
         ),
         obscureText: true,
+      ),
+      const SizedBox(height: 8),
+      ElevatedButton(
+        onPressed: () {},
+        child: const Text("Sign in"),
+      ),
+      const SizedBox(height: 8),
+      TextButton(
+        onPressed: () {},
+        child: const Text("Need an account? Register"),
       ),
     ];
   }
@@ -26,6 +37,7 @@ class EmailSignInForm extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: _buildChildren(),
       ),
     );

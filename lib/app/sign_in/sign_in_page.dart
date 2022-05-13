@@ -1,9 +1,8 @@
+import 'package:bethel_smallholding/app/sign_in/email_sign_in_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
 import 'package:bethel_smallholding/app/sign_in/social_sign_in_button.dart';
 import 'package:bethel_smallholding/services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 class SignInPage extends StatelessWidget {
   final AuthBase auth;
@@ -20,7 +19,7 @@ class SignInPage extends StatelessWidget {
         title: const Text('Bethel Smallholding'),
         elevation: 2.0,
       ),
-      body: _buildContent(),
+      body: _buildContent(context),
       backgroundColor: Colors.grey[200],
     );
   }
@@ -49,12 +48,16 @@ class SignInPage extends StatelessWidget {
     }
   }
 
-  void _signInWithEmail() {
-    // TODO: Auth with Email
-    print("Email");
+  void _signInWithEmail(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => EmailSignInPage(),
+      ),
+    );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -96,7 +99,7 @@ class SignInPage extends StatelessWidget {
             text: "Sign in with Email",
             buttonColor: Colors.teal.shade700,
             textColor: Colors.white,
-            onPressed: _signInWithEmail,
+            onPressed: () => _signInWithEmail(context),
           ),
           const SizedBox(
             height: 8,

@@ -1,3 +1,5 @@
+import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
+import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:flutter/material.dart';
 
 class EmailSignInForm extends StatelessWidget {
@@ -19,9 +21,9 @@ class EmailSignInForm extends StatelessWidget {
         obscureText: true,
       ),
       const SizedBox(height: 8),
-      ElevatedButton(
-        onPressed: () {},
-        child: const Text("Sign in"),
+      FormSubmitButton(
+        text: "Sign in",
+        callback: () {},
       ),
       const SizedBox(height: 8),
       TextButton(

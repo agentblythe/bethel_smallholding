@@ -2,9 +2,14 @@ import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:flutter/material.dart';
 
-class EmailSignInForm extends StatelessWidget {
-  EmailSignInForm({Key? key}) : super(key: key);
+class EmailSignInForm extends StatefulWidget {
+  const EmailSignInForm({ Key? key }) : super(key: key);
 
+  @override
+  State<EmailSignInForm> createState() => _EmailSignInFormState();
+}
+
+class _EmailSignInFormState extends State<EmailSignInForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -42,7 +47,7 @@ class EmailSignInForm extends StatelessWidget {
       ),
     ];
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -55,3 +60,4 @@ class EmailSignInForm extends StatelessWidget {
     );
   }
 }
+

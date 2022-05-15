@@ -3,19 +3,29 @@ import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:flutter/material.dart';
 
 class EmailSignInForm extends StatelessWidget {
-  const EmailSignInForm({Key? key}) : super(key: key);
+  EmailSignInForm({Key? key}) : super(key: key);
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void _submit() {
+    print(emailController.text);
+    print(passwordController.text);
+  }
 
   List<Widget> _buildChildren() {
     return [
-      const TextField(
-        decoration: InputDecoration(
+      TextField(
+        controller: emailController,
+        decoration: const InputDecoration(
           labelText: "Email",
           hintText: "test@test.com",
         ),
       ),
       const SizedBox(height: 8),
-      const TextField(
-        decoration: InputDecoration(
+      TextField(
+        controller: passwordController,
+        decoration: const InputDecoration(
           labelText: "Password",
         ),
         obscureText: true,
@@ -23,7 +33,7 @@ class EmailSignInForm extends StatelessWidget {
       const SizedBox(height: 8),
       FormSubmitButton(
         text: "Sign in",
-        callback: () {},
+        callback: _submit,
       ),
       const SizedBox(height: 8),
       TextButton(

@@ -28,6 +28,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   String get _email => _emailController.text;
   String get _password => _passwordController.text;
 
+  final FocusNode _passwordFocusNode = FocusNode();
+
   EmailSignInFormType _signInFormType = EmailSignInFormType.signIn;
 
   void _submit() async {
@@ -89,6 +91,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
+      onEditingComplete: _emailEditingComplete,
     );
   }
 
@@ -100,6 +103,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,
+      focusNode: _passwordFocusNode,
+      onEditingComplete: _submit,
     );
   }
 
@@ -113,5 +118,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         children: _buildChildren(),
       ),
     );
+  }
+
+  void _emailEditingComplete() {
+    FocusScope.of(context).requestFocus(_passwordFocusNode);
   }
 }

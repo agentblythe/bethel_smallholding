@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
+import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
 
 enum EmailSignInFormType {
@@ -8,15 +9,20 @@ enum EmailSignInFormType {
 }
 
 class EmailSignInForm extends StatefulWidget {
-  const EmailSignInForm({Key? key}) : super(key: key);
+  final AuthBase auth;
+
+  const EmailSignInForm({
+    Key? key,
+    required this.auth,
+  }) : super(key: key);
 
   @override
   State<EmailSignInForm> createState() => _EmailSignInFormState();
 }
 
 class _EmailSignInFormState extends State<EmailSignInForm> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   EmailSignInFormType _signInFormType = EmailSignInFormType.signIn;
 
@@ -59,7 +65,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ),
         obscureText: true,
       ),
-      const SizedBox(height: 8),
+      const SizedBox(height: 16),
       FormSubmitButton(
         text: buttonText,
         callback: _submit,

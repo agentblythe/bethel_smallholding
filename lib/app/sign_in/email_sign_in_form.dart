@@ -2,6 +2,7 @@ import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 enum EmailSignInFormType {
   signIn,
@@ -61,21 +62,9 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? "Need an account? Register"
         : "Already have an account? Sign in";
     return [
-      TextField(
-        controller: _emailController,
-        decoration: const InputDecoration(
-          labelText: "Email",
-          hintText: "test@test.com",
-        ),
-      ),
+      _buildEmailTextField(),
       const SizedBox(height: 8),
-      TextField(
-        controller: _passwordController,
-        decoration: const InputDecoration(
-          labelText: "Password",
-        ),
-        obscureText: true,
-      ),
+      _buildPasswordTextField(),
       const SizedBox(height: 16),
       FormSubmitButton(
         text: buttonText,
@@ -87,6 +76,31 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         child: Text(promptText),
       ),
     ];
+  }
+
+  Widget _buildEmailTextField() {
+    return TextField(
+      controller: _emailController,
+      decoration: const InputDecoration(
+        labelText: "Email",
+        hintText: "test@test.com",
+      ),
+      enableSuggestions: false,
+      autocorrect: false,
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextField(
+      controller: _passwordController,
+      decoration: const InputDecoration(
+        labelText: "Password",
+      ),
+      obscureText: true,
+      textInputAction: TextInputAction.done,
+    );
   }
 
   @override

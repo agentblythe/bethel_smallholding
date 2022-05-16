@@ -2,26 +2,50 @@ import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:flutter/material.dart';
 
+enum EmailSignInFormType {
+  signIn,
+  register,
+}
+
 class EmailSignInForm extends StatefulWidget {
-  const EmailSignInForm({ Key? key }) : super(key: key);
+  const EmailSignInForm({Key? key}) : super(key: key);
 
   @override
   State<EmailSignInForm> createState() => _EmailSignInFormState();
 }
 
 class _EmailSignInFormState extends State<EmailSignInForm> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  EmailSignInFormType _signInFormType = EmailSignInFormType.signIn;
 
   void _submit() {
-    print(emailController.text);
-    print(passwordController.text);
+    print(_emailController.text);
+    print(_passwordController.text);
+  }
+
+  void _toggleFormType() {
+    setState(() {
+      if (_signInFormType == EmailSignInFormType.signIn) {
+        _signInFormType = EmailSignInFormType.register;
+      } else {
+        _signInFormType = EmailSignInFormType.signIn;
+      }
+    });
+    _emailController.clear();
+    _passwordController.clear();
   }
 
   List<Widget> _buildChildren() {
+    final buttonText =
+        _signInFormType == EmailSignInFormType.signIn ? "Sign in" : "Register";
+    final promptText = _signInFormType == EmailSignInFormType.signIn
+        ? "Need an account? Register"
+        : "Already have an account? Sign in";
     return [
       TextField(
-        controller: emailController,
+        controller: _emailController,
         decoration: const InputDecoration(
           labelText: "Email",
           hintText: "test@test.com",
@@ -29,7 +53,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       const SizedBox(height: 8),
       TextField(
-        controller: passwordController,
+        controller: _passwordController,
         decoration: const InputDecoration(
           labelText: "Password",
         ),
@@ -37,17 +61,17 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       const SizedBox(height: 8),
       FormSubmitButton(
-        text: "Sign in",
+        text: buttonText,
         callback: _submit,
       ),
       const SizedBox(height: 8),
       TextButton(
-        onPressed: () {},
-        child: const Text("Need an account? Register"),
+        onPressed: _toggleFormType,
+        child: Text(promptText),
       ),
     ];
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,4 +84,3 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     );
   }
 }
-

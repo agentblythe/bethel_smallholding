@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/services/auth.dart';
@@ -9,10 +10,10 @@ enum EmailSignInFormType {
   register,
 }
 
-class EmailSignInForm extends StatefulWidget {
+class EmailSignInForm extends StatefulWidget with EmailAndPasswordvalidators {
   final AuthBase auth;
 
-  const EmailSignInForm({
+  EmailSignInForm({
     Key? key,
     required this.auth,
   }) : super(key: key);
@@ -63,7 +64,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     final promptText = _signInFormType == EmailSignInFormType.signIn
         ? "Need an account? Register"
         : "Already have an account? Sign in";
-    bool _submitEnabled = _email.isNotEmpty && _password.isNotEmpty;
+    bool _submitEnabled = widget.emailValidator.isValid(_email) &&
+        widget.passwordValidator.isValid(_password);
 
     return [
       _buildEmailTextField(),

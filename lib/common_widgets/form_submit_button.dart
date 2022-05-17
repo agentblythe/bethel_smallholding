@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class FormSubmitButton extends CustomElevatedButton {
   final String text;
-  final VoidCallback callback;
+  final VoidCallback? callback;
 
   FormSubmitButton({
     Key? key,

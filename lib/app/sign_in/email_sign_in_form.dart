@@ -41,6 +41,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
 
     try {
+      await Future.delayed(Duration(seconds: 3));
       if (_signInFormType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
       } else {

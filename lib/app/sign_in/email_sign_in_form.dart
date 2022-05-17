@@ -1,9 +1,7 @@
 import 'package:bethel_smallholding/app/sign_in/validators.dart';
-import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 enum EmailSignInFormType {
   signIn,
@@ -34,10 +32,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   EmailSignInFormType _signInFormType = EmailSignInFormType.signIn;
 
   bool _submitted = false;
+  bool _isLoading = false;
 
   void _submit() async {
     setState(() {
       _submitted = true;
+      _isLoading = true;
     });
 
     try {
@@ -50,6 +50,10 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       Navigator.of(context).pop();
     } catch (e) {
       print(e.toString());
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -73,7 +77,8 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         ? "Need an account? Register"
         : "Already have an account? Sign in";
     bool _submitEnabled = widget.emailValidator.isValid(_email) &&
-        widget.passwordValidator.isValid(_password);
+        widget.passwordValidator.isValid(_password) &&
+        !_isLoading;
 
     return [
       _buildEmailTextField(),
@@ -81,12 +86,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       _buildPasswordTextField(),
       const SizedBox(height: 16),
       FormSubmitButton(
-        text: buttonText,
+        child: !_isLoading
+            ? Text(
+                buttonText,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              )
+            : const CircularProgressIndicator(),
         callback: _submitEnabled ? _submit : null,
       ),
       const SizedBox(height: 8),
       TextButton(
-        onPressed: _toggleFormType,
+        onPressed: !_isLoading ? _toggleFormType : null,
         child: Text(promptText),
       ),
     ];
@@ -101,6 +114,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         labelText: "Email",
         hintText: "test@test.com",
         errorText: showEmailErrorText ? widget.invalidEmailErrorText : null,
+        enabled: !_isLoading,
       ),
       enableSuggestions: false,
       autocorrect: false,
@@ -120,6 +134,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         labelText: "Password",
         errorText:
             showPasswordErrorText ? widget.invalidPasswordErrorText : null,
+        enabled: !_isLoading,
       ),
       obscureText: true,
       textInputAction: TextInputAction.done,

@@ -2,14 +2,12 @@ import 'package:bethel_smallholding/app/sign_in/email_sign_in_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button_with_text_and_icon.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 class SignInPage extends StatelessWidget {
-  final AuthBase auth;
-
   const SignInPage({
     Key? key,
-    required this.auth,
   }) : super(key: key);
 
   @override
@@ -24,24 +22,36 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Future<void> _signInAnonymously() async {
+  Future<void> _signInAnonymously(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
+      if (auth == null) {
+        throw Exception("Unable to locate AuthProvider in the Widget Tree");
+      }
       await auth.signInAnonymously();
     } catch (e) {
       print("Anonymous sign-in failed with exception: ${e.toString()}");
     }
   }
 
-  Future<void> _signInWithGoogle() async {
+  Future<void> _signInWithGoogle(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
+      if (auth == null) {
+        throw Exception("Unable to locate AuthProvider in the Widget Tree");
+      }
       await auth.signInWithGoogle();
     } catch (e) {
       print("Google sign-in failed with exception: ${e.toString()}");
     }
   }
 
-  Future<void> _signInWithFacebook() async {
+  Future<void> _signInWithFacebook(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
+      if (auth == null) {
+        throw Exception("Unable to locate AuthProvider in the Widget Tree");
+      }
       await auth.signInWithFacebook();
     } catch (e) {
       print("Facebook sign-in failed with exception: ${e.toString()}");
@@ -52,9 +62,7 @@ class SignInPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         fullscreenDialog: true,
-        builder: (context) => EmailSignInPage(
-          auth: auth,
-        ),
+        builder: (context) => EmailSignInPage(),
       ),
     );
   }
@@ -82,7 +90,7 @@ class SignInPage extends StatelessWidget {
             text: "Sign in with Google",
             buttonColor: Colors.white,
             textColor: Colors.black87,
-            onPressed: _signInWithGoogle,
+            onPressed: () => _signInWithGoogle(context),
           ),
           const SizedBox(
             height: 8,
@@ -92,7 +100,7 @@ class SignInPage extends StatelessWidget {
             text: "Sign in with Facebook",
             buttonColor: const Color(0xFF334D92),
             textColor: Colors.white,
-            onPressed: _signInWithFacebook,
+            onPressed: () => _signInWithFacebook(context),
           ),
           const SizedBox(
             height: 8,
@@ -119,7 +127,7 @@ class SignInPage extends StatelessWidget {
             text: "Go Anonymous",
             buttonColor: Colors.lime.shade300,
             textColor: Colors.black,
-            onPressed: _signInAnonymously,
+            onPressed: () => _signInAnonymously(context),
           ),
         ],
       ),

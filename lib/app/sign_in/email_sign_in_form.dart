@@ -4,6 +4,7 @@ import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 enum EmailSignInFormType {
@@ -12,11 +13,8 @@ enum EmailSignInFormType {
 }
 
 class EmailSignInForm extends StatefulWidget with EmailAndPasswordvalidators {
-  final AuthBase auth;
-
   EmailSignInForm({
     Key? key,
-    required this.auth,
   }) : super(key: key);
 
   @override
@@ -45,10 +43,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
 
     try {
+      final auth = AuthProvider.of(context)!;
       if (_signInFormType == EmailSignInFormType.signIn) {
-        await widget.auth.signInWithEmailAndPassword(_email, _password);
+        await auth.signInWithEmailAndPassword(_email, _password);
       } else {
-        await widget.auth.createUserWithEmailAndPassword(_email, _password);
+        await auth.createUserWithEmailAndPassword(_email, _password);
       }
       Navigator.of(context).pop();
     } catch (e) {

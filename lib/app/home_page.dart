@@ -1,17 +1,19 @@
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  final AuthBase auth;
-
   const HomePage({
     Key? key,
-    required this.auth,
   }) : super(key: key);
 
-  Future<void> _signOut() async {
+  Future<void> _signOut(BuildContext context) async {
     try {
+      final auth = AuthProvider.of(context);
+      if (auth == null) {
+        throw Exception("Unable to locate AuthProvider in the Widget Tree");
+      }
       await auth.signOut();
     } catch (e) {
       print("Sign-out failed with exception: ${e.toString()}");
@@ -28,7 +30,7 @@ class HomePage extends StatelessWidget {
     );
 
     if (didRequestSignOut == true) {
-      _signOut();
+      _signOut(context);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/app/landing_page.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,13 +17,14 @@ class BethelSmallholdingApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Bethel Smallholding',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: LandingPage(
-        auth: Auth(),
+    return AuthProvider(
+      auth: Auth(),
+      child: MaterialApp(
+        title: 'Bethel Smallholding',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: LandingPage(),
       ),
     );
   }

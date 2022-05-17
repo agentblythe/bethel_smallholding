@@ -4,8 +4,8 @@ import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class SocialSignInButton extends CustomElevatedButton {
-  SocialSignInButton({
+class SignInButtonWithTextAndIcon extends CustomElevatedButton {
+  SignInButtonWithTextAndIcon({
     Key? key,
     required final String image,
     required final String text,

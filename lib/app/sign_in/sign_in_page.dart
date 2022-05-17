@@ -1,6 +1,6 @@
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
-import 'package:bethel_smallholding/app/sign_in/social_sign_in_button.dart';
+import 'package:bethel_smallholding/app/sign_in/sign_in_button_with_text_and_icon.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -77,7 +77,7 @@ class SignInPage extends StatelessWidget {
           const SizedBox(
             height: 48,
           ),
-          SocialSignInButton(
+          SignInButtonWithTextAndIcon(
             image: "images/google-logo.png",
             text: "Sign in with Google",
             buttonColor: Colors.white,
@@ -87,7 +87,7 @@ class SignInPage extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          SocialSignInButton(
+          SignInButtonWithTextAndIcon(
             image: "images/facebook-logo.png",
             text: "Sign in with Facebook",
             buttonColor: const Color(0xFF334D92),
@@ -97,7 +97,8 @@ class SignInPage extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          SignInButton(
+          SignInButtonWithTextAndIcon(
+            image: "images/email-icon.png",
             text: "Sign in with Email",
             buttonColor: Colors.teal.shade700,
             textColor: Colors.white,

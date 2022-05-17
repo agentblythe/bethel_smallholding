@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,21 @@ class HomePage extends StatelessWidget {
     try {
       await auth.signOut();
     } catch (e) {
-      print("Anonymous sign-in failed with exception: ${e.toString()}");
+      print("Sign-out failed with exception: ${e.toString()}");
+    }
+  }
+
+  Future<void> _confirmSignOut(BuildContext context) async {
+    final didRequestSignOut = await showAlertDialog(
+      context,
+      title: "Sign out confirmation",
+      content: "Are you sure you want to sign out?",
+      defaultAction: AlertAction(text: "Sign out", destructive: true),
+      cancelAction: AlertAction(text: "Cancel"),
+    );
+
+    if (didRequestSignOut == true) {
+      _signOut();
     }
   }
 
@@ -24,9 +39,7 @@ class HomePage extends StatelessWidget {
         title: const Text("Home Page"),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-              _signOut();
-            },
+            onPressed: () => _confirmSignOut(context),
             child: const Text(
               "Logout",
               style: TextStyle(

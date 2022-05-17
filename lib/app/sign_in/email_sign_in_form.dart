@@ -52,10 +52,12 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       Navigator.of(context).pop();
     } catch (e) {
-      showAlertDialog(context,
-          title: "Sign in failed",
-          content: e.toString(),
-          defaultActionText: "OK");
+      showAlertDialog(
+        context,
+        title: "Sign in failed",
+        content: e.toString(),
+        defaultAction: AlertAction(text: "OK"),
+      );
     } finally {
       setState(() {
         _isLoading = false;

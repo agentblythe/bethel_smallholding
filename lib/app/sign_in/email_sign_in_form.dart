@@ -33,7 +33,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   EmailSignInFormType _signInFormType = EmailSignInFormType.signIn;
 
+  bool _submitted = false;
+
   void _submit() async {
+    setState(() {
+      _submitted = true;
+    });
+
     try {
       if (_signInFormType == EmailSignInFormType.signIn) {
         await widget.auth.signInWithEmailAndPassword(_email, _password);
@@ -48,6 +54,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   void _toggleFormType() {
     setState(() {
+      _submitted = false;
       if (_signInFormType == EmailSignInFormType.signIn) {
         _signInFormType = EmailSignInFormType.register;
       } else {
@@ -85,13 +92,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   Widget _buildEmailTextField() {
-    bool emailValid = widget.emailValidator.isValid(_email);
+    bool showEmailErrorText =
+        !widget.emailValidator.isValid(_email) && _submitted;
     return TextField(
       controller: _emailController,
       decoration: InputDecoration(
-          labelText: "Email",
-          hintText: "test@test.com",
-          errorText: emailValid ? null : widget.invalidEmailErrorText),
+        labelText: "Email",
+        hintText: "test@test.com",
+        errorText: showEmailErrorText ? widget.invalidEmailErrorText : null,
+      ),
       enableSuggestions: false,
       autocorrect: false,
       keyboardType: TextInputType.emailAddress,
@@ -102,12 +111,15 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   Widget _buildPasswordTextField() {
-    bool passwordValid = widget.passwordValidator.isValid(_password);
+    bool showPasswordErrorText =
+        !widget.passwordValidator.isValid(_password) && _submitted;
     return TextField(
       controller: _passwordController,
       decoration: InputDecoration(
-          labelText: "Password",
-          errorText: passwordValid ? null : widget.invalidPasswordErrorText),
+        labelText: "Password",
+        errorText:
+            showPasswordErrorText ? widget.invalidPasswordErrorText : null,
+      ),
       obscureText: true,
       textInputAction: TextInputAction.done,
       focusNode: _passwordFocusNode,

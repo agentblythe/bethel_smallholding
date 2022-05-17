@@ -45,6 +45,9 @@ dependencies:
   # Facebook
   flutter_login_facebook: ^1.4.1
 
+  # Provider / Consumer
+  provider: ^6.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

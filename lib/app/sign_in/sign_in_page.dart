@@ -2,8 +2,8 @@ import 'package:bethel_smallholding/app/sign_in/email_sign_in_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_button_with_text_and_icon.dart';
 import 'package:bethel_smallholding/services/auth.dart';
-import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({
@@ -24,10 +24,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInAnonymously(BuildContext context) async {
     try {
-      final auth = AuthProvider.of(context);
-      if (auth == null) {
-        throw Exception("Unable to locate AuthProvider in the Widget Tree");
-      }
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInAnonymously();
     } catch (e) {
       print("Anonymous sign-in failed with exception: ${e.toString()}");
@@ -36,10 +33,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      final auth = AuthProvider.of(context);
-      if (auth == null) {
-        throw Exception("Unable to locate AuthProvider in the Widget Tree");
-      }
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInWithGoogle();
     } catch (e) {
       print("Google sign-in failed with exception: ${e.toString()}");
@@ -48,10 +42,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      final auth = AuthProvider.of(context);
-      if (auth == null) {
-        throw Exception("Unable to locate AuthProvider in the Widget Tree");
-      }
+      final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signInWithFacebook();
     } catch (e) {
       print("Facebook sign-in failed with exception: ${e.toString()}");

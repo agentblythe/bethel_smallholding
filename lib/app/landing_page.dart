@@ -1,8 +1,9 @@
 import 'package:bethel_smallholding/app/home_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
-import 'package:bethel_smallholding/services/auth_provider.dart';
+import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({
@@ -11,10 +12,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final auth = AuthProvider.of(context);
-    if (auth == null) {
-      throw Exception("Unable to locate AuthProvider in the Widget Tree");
-    }
+    final auth = Provider.of<AuthBase>(context, listen: false);
 
     return StreamBuilder<User?>(
       stream: auth.authStateChanges(),

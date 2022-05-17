@@ -4,8 +4,8 @@ import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
-import 'package:bethel_smallholding/services/auth_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 enum EmailSignInFormType {
   signIn,
@@ -43,7 +43,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     });
 
     try {
-      final auth = AuthProvider.of(context)!;
+      final auth = Provider.of<AuthBase>(context, listen: false);
       if (_signInFormType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_email, _password);
       } else {

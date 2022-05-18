@@ -72,7 +72,7 @@ class Auth implements AuthBase {
       }
     } else {
       throw FirebaseAuthException(
-        code: "GOOGLE_SIGN_IN_ABORTED_BY_USER",
+        code: "SIGN_IN_ABORTED_BY_USER",
         message: "Google sign-in was aborted by the user",
       );
     }
@@ -100,7 +100,7 @@ class Auth implements AuthBase {
         }
       case FacebookLoginStatus.cancel:
         throw FirebaseAuthException(
-          code: "FACEBOOK_SIGN_IN_ABORTED_BY_USER",
+          code: "SIGN_IN_ABORTED_BY_USER",
           message: "Facebook sign-in was aborted by the user",
         );
       case FacebookLoginStatus.error:

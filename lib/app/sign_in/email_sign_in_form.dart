@@ -4,6 +4,7 @@ import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,11 +51,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         await auth.createUserWithEmailAndPassword(_email, _password);
       }
       Navigator.of(context).pop();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       showAlertDialog(
         context,
         title: "Sign in failed",
-        content: e.toString(),
+        content: e.message ?? "Unknown sign in error",
         defaultAction: AlertAction(text: "OK"),
       );
     } finally {

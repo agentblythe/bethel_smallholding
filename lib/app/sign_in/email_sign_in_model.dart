@@ -1,9 +1,11 @@
+import 'package:bethel_smallholding/app/sign_in/validators.dart';
+
 enum EmailSignInFormType {
   signIn,
   register,
 }
 
-class EmailSignInModel {
+class EmailSignInModel with EmailAndPasswordvalidators {
   final String email;
   final String password;
   final EmailSignInFormType formType;
@@ -17,6 +19,27 @@ class EmailSignInModel {
     this.isLoading = false,
     this.submitted = false,
   });
+
+  String get primaryButtonText =>
+      formType == EmailSignInFormType.signIn ? "Sign in" : "Register";
+
+  String get secondaryButtonText => formType == EmailSignInFormType.signIn
+      ? "Need an account? Register"
+      : "Already have an account? Sign in";
+
+  bool get submitEnabled =>
+      emailValidator.isValid(email) &&
+      passwordValidator.isValid(password) &&
+      !isLoading;
+
+  String? get emailErrorText => !emailValidator.isValid(email) && submitted
+      ? invalidEmailErrorText
+      : null;
+
+  String? get passwordErrorText =>
+      !passwordValidator.isValid(password) && submitted
+          ? passwordErrorText
+          : null;
 
   EmailSignInModel CopyWith({
     String? email,

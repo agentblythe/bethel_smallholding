@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordvalidators {
+class EmailSignInForm extends StatefulWidget {
   EmailSignInForm({
     Key? key,
     required this.bloc,
@@ -69,15 +69,6 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   List<Widget> _buildChildren(EmailSignInModel model) {
-    final buttonText =
-        model.formType == EmailSignInFormType.signIn ? "Sign in" : "Register";
-    final promptText = model.formType == EmailSignInFormType.signIn
-        ? "Need an account? Register"
-        : "Already have an account? Sign in";
-    bool _submitEnabled = widget.emailValidator.isValid(model.email) &&
-        widget.passwordValidator.isValid(model.password) &&
-        !model.isLoading;
-
     return [
       _buildEmailTextField(model),
       const SizedBox(height: 8),
@@ -86,32 +77,30 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       FormSubmitButton(
         child: !model.isLoading
             ? Text(
-                buttonText,
+                model.primaryButtonText,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20.0,
                 ),
               )
             : const CircularProgressIndicator(),
-        callback: _submitEnabled ? _submit : null,
+        callback: model.submitEnabled ? _submit : null,
       ),
       const SizedBox(height: 8),
       TextButton(
         onPressed: !model.isLoading ? _toggleFormType : null,
-        child: Text(promptText),
+        child: Text(model.secondaryButtonText),
       ),
     ];
   }
 
   Widget _buildEmailTextField(EmailSignInModel model) {
-    bool showEmailErrorText =
-        !widget.emailValidator.isValid(model.email) && model.submitted;
     return TextField(
       controller: _emailController,
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "test@test.com",
-        errorText: showEmailErrorText ? widget.invalidEmailErrorText : null,
+        errorText: model.emailErrorText,
         enabled: !model.isLoading,
       ),
       enableSuggestions: false,
@@ -125,14 +114,11 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   Widget _buildPasswordTextField(EmailSignInModel model) {
-    bool showPasswordErrorText =
-        !widget.passwordValidator.isValid(model.password) && model.submitted;
     return TextField(
       controller: _passwordController,
       decoration: InputDecoration(
         labelText: "Password",
-        errorText:
-            showPasswordErrorText ? widget.invalidPasswordErrorText : null,
+        errorText: model.passwordErrorText,
         enabled: !model.isLoading,
       ),
       obscureText: true,
@@ -162,7 +148,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   void _emailEditingComplete(EmailSignInModel model) {
-    final newFocus = widget.emailValidator.isValid(model.email)
+    final newFocus = model.emailValidator.isValid(model.email)
         ? _passwordFocusNode
         : _emailFocusNode;
     FocusScope.of(context).requestFocus(newFocus);

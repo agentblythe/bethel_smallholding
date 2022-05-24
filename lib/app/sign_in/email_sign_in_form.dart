@@ -52,6 +52,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   void _submit() async {
     try {
       await widget.bloc.submit();
+      Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,

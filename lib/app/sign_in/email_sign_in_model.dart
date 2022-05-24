@@ -32,6 +32,8 @@ class EmailSignInModel with EmailAndPasswordvalidators {
       passwordValidator.isValid(password) &&
       !isLoading;
 
+  bool get restPasswordEnabled => emailValidator.isValid(email) && !isLoading;
+
   String? get emailErrorText => !emailValidator.isValid(email) && submitted
       ? invalidEmailErrorText
       : null;

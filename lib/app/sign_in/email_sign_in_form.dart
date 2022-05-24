@@ -2,6 +2,7 @@ import 'package:bethel_smallholding/app/sign_in/email_sign_in_bloc.dart';
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_model.dart';
 import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
+import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -69,6 +70,38 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     _passwordController.clear();
   }
 
+  Future<void> _confirmResetPassword(BuildContext context, String email) async {
+    final didConfirmResetPassword = await showAlertDialog(
+      context,
+      title: "Reset password confirmation",
+      content:
+          "Are you sure you want to reset your password?  An email will be sent to $email",
+      defaultAction: AlertAction(
+        text: "Reset",
+        destructive: true,
+      ),
+      cancelAction: AlertAction(text: "Cancel"),
+    );
+
+    if (didConfirmResetPassword == true) {
+      _resetPassword(context, email);
+    }
+  }
+
+  Future<void> _resetPassword(BuildContext context, String email) async {
+    const snackBar = SnackBar(
+      content: Text("Email sent!"),
+    );
+
+    try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
+      await auth.resetPassword(email);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } catch (e) {
+      print("Password reset failed with exception: ${e.toString()}");
+    }
+  }
+
   List<Widget> _buildChildren(EmailSignInModel model) {
     return [
       _buildEmailTextField(model),
@@ -92,6 +125,13 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         onPressed: !model.isLoading ? _toggleFormType : null,
         child: Text(model.secondaryButtonText),
       ),
+      if (model.formType == EmailSignInFormType.signIn)
+        TextButton(
+          onPressed: model.restPasswordEnabled
+              ? () => _confirmResetPassword(context, model.email)
+              : null,
+          child: Text("Forgotten your password? Reset it."),
+        ),
     ];
   }
 
@@ -133,19 +173,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EmailSignInModel>(
-        stream: widget.bloc.modelStream,
-        initialData: EmailSignInModel(),
-        builder: (context, snapshot) {
-          final EmailSignInModel model = snapshot.data!;
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: _buildChildren(model),
-            ),
-          );
-        });
+      stream: widget.bloc.modelStream,
+      initialData: EmailSignInModel(),
+      builder: (context, snapshot) {
+        final EmailSignInModel model = snapshot.data!;
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: _buildChildren(model),
+          ),
+        );
+      },
+    );
   }
 
   void _emailEditingComplete(EmailSignInModel model) {

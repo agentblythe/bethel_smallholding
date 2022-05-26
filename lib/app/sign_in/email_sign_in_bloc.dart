@@ -42,7 +42,12 @@ class EmailSignInBloc {
           : EmailSignInFormType.signIn,
       isLoading: false,
       submitted: false,
+      hidePassword: true,
     );
+  }
+
+  void togglePasswordVisibility() {
+    updateWith(hidePassword: !_model.hidePassword);
   }
 
   void updateEmail(String email) => updateWith(email: email);
@@ -55,6 +60,7 @@ class EmailSignInBloc {
     EmailSignInFormType? formType,
     bool? isLoading,
     bool? submitted,
+    bool? hidePassword,
   }) {
     _model = _model.CopyWith(
       email: email,
@@ -62,6 +68,7 @@ class EmailSignInBloc {
       formType: formType,
       isLoading: isLoading,
       submitted: submitted,
+      hidePassword: hidePassword,
     );
     _modelController.add(_model);
   }

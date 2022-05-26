@@ -106,7 +106,25 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     return [
       _buildEmailTextField(model),
       const SizedBox(height: 8),
-      _buildPasswordTextField(model),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPasswordTextField(model),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+            child: IconButton(
+              onPressed: () {
+                widget.bloc.togglePasswordVisibility();
+              },
+              icon: const Icon(
+                Icons.remove_red_eye,
+              ),
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
       const SizedBox(height: 16),
       FormSubmitButton(
         child: !model.isLoading
@@ -155,18 +173,20 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
   }
 
   Widget _buildPasswordTextField(EmailSignInModel model) {
-    return TextField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-        labelText: "Password",
-        errorText: model.passwordErrorText,
-        enabled: !model.isLoading,
+    return Expanded(
+      child: TextField(
+        controller: _passwordController,
+        decoration: InputDecoration(
+          labelText: "Password",
+          errorText: model.passwordErrorText,
+          enabled: !model.isLoading,
+        ),
+        obscureText: model.hidePassword,
+        textInputAction: TextInputAction.done,
+        focusNode: _passwordFocusNode,
+        onEditingComplete: model.submitEnabled ? _submit : null,
+        onChanged: widget.bloc.updatePassword,
       ),
-      obscureText: true,
-      textInputAction: TextInputAction.done,
-      focusNode: _passwordFocusNode,
-      onEditingComplete: model.submitEnabled ? _submit : null,
-      onChanged: widget.bloc.updatePassword,
     );
   }
 

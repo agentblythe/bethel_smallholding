@@ -11,6 +11,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
   final EmailSignInFormType formType;
   final bool isLoading;
   final bool submitted;
+  final bool hidePassword;
 
   EmailSignInModel({
     this.email = "",
@@ -18,6 +19,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     this.formType = EmailSignInFormType.signIn,
     this.isLoading = false,
     this.submitted = false,
+    this.hidePassword = true,
   });
 
   String get primaryButtonText =>
@@ -56,6 +58,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     EmailSignInFormType? formType,
     bool? isLoading,
     bool? submitted,
+    bool? hidePassword,
   }) {
     return EmailSignInModel(
       email: email ?? this.email,
@@ -63,6 +66,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
       formType: formType ?? this.formType,
       isLoading: isLoading ?? this.isLoading,
       submitted: submitted ?? this.submitted,
+      hidePassword: hidePassword ?? this.hidePassword,
     );
   }
 }

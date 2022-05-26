@@ -5,7 +5,7 @@ enum EmailSignInFormType {
   register,
 }
 
-class EmailSignInModel with EmailAndPasswordvalidators {
+class EmailSignInModel with EmailAndPasswordValidators {
   final String email;
   final String password;
   final EmailSignInFormType formType;
@@ -34,13 +34,12 @@ class EmailSignInModel with EmailAndPasswordvalidators {
 
   bool get restPasswordEnabled => emailValidator.isValid(email) && !isLoading;
 
-  String? get emailErrorText => !emailValidator.isValid(email) && submitted
-      ? invalidEmailErrorText
-      : null;
+  String? get emailErrorText =>
+      !emailValidator.isValid(email) && submitted ? emailValidator.error : null;
 
   String? get passwordErrorText =>
       !passwordValidator.isValid(password) && submitted
-          ? invalidPasswordErrorText
+          ? passwordValidator.error
           : null;
 
   EmailSignInModel CopyWith({

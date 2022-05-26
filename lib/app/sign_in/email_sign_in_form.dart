@@ -165,7 +165,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       obscureText: true,
       textInputAction: TextInputAction.done,
       focusNode: _passwordFocusNode,
-      onEditingComplete: _submit,
+      onEditingComplete: model.submitEnabled ? _submit : null,
       onChanged: widget.bloc.updatePassword,
     );
   }

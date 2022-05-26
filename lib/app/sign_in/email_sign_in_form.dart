@@ -130,7 +130,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           onPressed: model.restPasswordEnabled
               ? () => _confirmResetPassword(context, model.email)
               : null,
-          child: Text("Forgotten your password? Reset it."),
+          child: const Text("Forgotten your password? Reset it."),
         ),
     ];
   }

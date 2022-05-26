@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
           TextButton(
             onPressed: () => _confirmSignOut(context),
             child: const Text(
-              "Logout",
+              "Sign out",
               style: TextStyle(
                 fontSize: 18.0,
                 color: Colors.white,

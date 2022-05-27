@@ -111,18 +111,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildPasswordTextField(model),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-            child: IconButton(
-              onPressed: () {
-                widget.bloc.togglePasswordVisibility();
-              },
-              icon: const Icon(
-                Icons.remove_red_eye,
-              ),
-              color: Colors.grey,
-            ),
-          ),
+          _passwordVisibilityIcon(model),
         ],
       ),
       const SizedBox(height: 16),
@@ -151,6 +140,19 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
           child: const Text("Forgotten your password? Reset it."),
         ),
     ];
+  }
+
+  Widget _passwordVisibilityIcon(EmailSignInModel model) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: IconButton(
+        onPressed: widget.bloc.togglePasswordVisibility,
+        icon: const Icon(
+          Icons.remove_red_eye,
+        ),
+        color: model.hidePassword ? Colors.grey : Colors.blue,
+      ),
+    );
   }
 
   Widget _buildEmailTextField(EmailSignInModel model) {

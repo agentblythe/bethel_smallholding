@@ -53,7 +53,7 @@ class PasswordValidator implements StringValidator {
       _error += "Ensure at least 8 characters long\n";
     }
 
-    return error == "";
+    return _error == "";
   }
 }
 

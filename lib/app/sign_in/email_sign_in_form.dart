@@ -1,6 +1,5 @@
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_bloc.dart';
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_model.dart';
-import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
@@ -90,7 +89,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
 
   Future<void> _resetPassword(BuildContext context, String email) async {
     const snackBar = SnackBar(
-      content: Text("Email sent!"),
+      content: Text("Reset Password email sent!"),
     );
 
     try {

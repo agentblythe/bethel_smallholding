@@ -2,13 +2,19 @@ import 'dart:async';
 
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class SignInBloc {
   final AuthBase auth;
+  final ValueNotifier<bool> isLoading;
+
   final StreamController<bool> _isLoadingController = StreamController<bool>();
   Stream<bool> get isLoadingStream => _isLoadingController.stream;
 
-  SignInBloc({required this.auth});
+  SignInBloc({
+    required this.auth,
+    required this.isLoading,
+  });
 
   void dispose() {
     _isLoadingController.close();

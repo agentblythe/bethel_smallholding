@@ -10,10 +10,12 @@ import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
   final SignInBloc bloc;
+  final bool isLoading;
 
   const SignInPage({
     Key? key,
     required this.bloc,
+    required this.isLoading,
   }) : super(key: key);
 
   static Widget create(BuildContext context) {
@@ -28,7 +30,10 @@ class SignInPage extends StatelessWidget {
             isLoading: isLoading,
           ),
           child: Consumer<SignInBloc>(
-            builder: (_, bloc, __) => SignInPage(bloc: bloc),
+            builder: (_, bloc, __) => SignInPage(
+              bloc: bloc,
+              isLoading: isLoading.value,
+            ),
           ),
         ),
       ),
@@ -45,7 +50,6 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = Provider.of<ValueNotifier<bool>>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Bethel Smallholding'),
@@ -53,7 +57,6 @@ class SignInPage extends StatelessWidget {
       ),
       body: _buildContent(
         context,
-        isLoading.value,
       ),
       // body: StreamBuilder<bool>(
       //   stream: bloc.isLoadingStream,
@@ -111,7 +114,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, bool isLoading) {
+  Widget _buildContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -120,7 +123,7 @@ class SignInPage extends StatelessWidget {
         children: <Widget>[
           SizedBox(
             height: 50.0,
-            child: _buildHeader(isLoading),
+            child: _buildHeader(),
           ),
           const SizedBox(
             height: 48,
@@ -174,7 +177,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(bool isLoading) {
+  Widget _buildHeader() {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else {

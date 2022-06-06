@@ -8,26 +8,28 @@ class SignInBloc {
   final AuthBase auth;
   final ValueNotifier<bool> isLoading;
 
-  final StreamController<bool> _isLoadingController = StreamController<bool>();
-  Stream<bool> get isLoadingStream => _isLoadingController.stream;
+  // final StreamController<bool> _isLoadingController = StreamController<bool>();
+  // Stream<bool> get isLoadingStream => _isLoadingController.stream;
 
   SignInBloc({
     required this.auth,
     required this.isLoading,
   });
 
-  void dispose() {
-    _isLoadingController.close();
-  }
+  // void dispose() {
+  //   _isLoadingController.close();
+  // }
 
-  void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
+  //void _setIsLoading(bool isLoading) => _isLoadingController.add(isLoading);
 
   Future<User?> _signIn(Future<User?> Function() signInMethod) async {
     try {
-      _setIsLoading(true);
+      isLoading.value = true;
+      //_setIsLoading(true);
       return await signInMethod();
     } catch (e) {
-      _setIsLoading(false);
+      isLoading.value = false;
+      //_setIsLoading(false);
       rethrow;
     }
   }

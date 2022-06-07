@@ -4,14 +4,14 @@ import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SignInBloc {
+class SignInManager {
   final AuthBase auth;
   final ValueNotifier<bool> isLoading;
 
   // final StreamController<bool> _isLoadingController = StreamController<bool>();
   // Stream<bool> get isLoadingStream => _isLoadingController.stream;
 
-  SignInBloc({
+  SignInManager({
     required this.auth,
     required this.isLoading,
   });

@@ -9,6 +9,8 @@ class EmailValidator implements StringValidator {
 
   @override
   bool isValid(String value) {
+    _error = "";
+
     RegExp exp = RegExp(
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
     RegExpMatch? match = exp.firstMatch(value);
@@ -28,6 +30,8 @@ class PasswordValidator implements StringValidator {
 
   @override
   bool isValid(String value) {
+    _error = "";
+
     // Ensure at least one lowercase letter exists.
     RegExp exp = RegExp(r".*[a-z].*");
     if (exp.firstMatch(value) == null) {

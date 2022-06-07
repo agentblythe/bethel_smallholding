@@ -1,4 +1,5 @@
 import 'package:bethel_smallholding/app/landing_page.dart';
+import 'package:bethel_smallholding/firebase_options.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(BethelSmallholdingApp());
 }
 

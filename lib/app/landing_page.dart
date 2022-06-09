@@ -1,4 +1,4 @@
-import 'package:bethel_smallholding/app/home_page.dart';
+import 'package:bethel_smallholding/app/blog_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +22,7 @@ class LandingPage extends StatelessWidget {
           if (user == null) {
             return SignInPage.create(context);
           }
-          return HomePage();
+          return BlogPage();
         }
         return const Scaffold(
           body: Center(

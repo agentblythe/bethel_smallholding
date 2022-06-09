@@ -3,8 +3,8 @@ import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({
+class BlogPage extends StatelessWidget {
+  const BlogPage({
     Key? key,
   }) : super(key: key);
 
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Home Page"),
+        title: const Text("Blog"),
         actions: <Widget>[
           TextButton(
             onPressed: () => _confirmSignOut(context),

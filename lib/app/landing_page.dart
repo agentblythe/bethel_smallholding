@@ -1,4 +1,4 @@
-import 'package:bethel_smallholding/app/blog_page.dart';
+import 'package:bethel_smallholding/app/home/blog_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';

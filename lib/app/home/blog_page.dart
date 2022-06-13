@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:bethel_smallholding/services/database.dart';
@@ -34,10 +35,12 @@ class BlogPage extends StatelessWidget {
 
   Future<void> _createBlogPost(BuildContext context) async {
     final database = Provider.of<Database>(context, listen: false);
-    database.createBlogPost({
-      "title": "test title",
-      "content": "test content",
-    });
+    await database.createBlogPost(
+      BlogPost(
+        title: "test title",
+        content: "test content",
+      ),
+    );
   }
 
   @override

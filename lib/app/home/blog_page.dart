@@ -1,10 +1,11 @@
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
+import 'package:bethel_smallholding/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BlogPage extends StatelessWidget {
-  const BlogPage({
+  BlogPage({
     Key? key,
   }) : super(key: key);
 
@@ -31,8 +32,18 @@ class BlogPage extends StatelessWidget {
     }
   }
 
+  Future<void> _createBlogPost(BuildContext context) async {
+    final database = Provider.of<Database>(context, listen: false);
+    database.createBlogPost({
+      "title": "test title",
+      "content": "test content",
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Blog"),
@@ -49,6 +60,12 @@ class BlogPage extends StatelessWidget {
           )
         ],
       ),
+      floatingActionButton: auth.admin
+          ? FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => _createBlogPost(context),
+            )
+          : null,
     );
   }
 }

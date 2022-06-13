@@ -12,6 +12,7 @@ abstract class AuthBase {
   Future<User?> signInWithFacebook();
   Future<void> signOut();
   Future<void> resetPassword(String email);
+  bool get admin;
 }
 
 class Auth implements AuthBase {
@@ -19,6 +20,9 @@ class Auth implements AuthBase {
 
   @override
   User? get currentUser => _firebaseAuth.currentUser;
+
+  @override
+  bool get admin => true;
 
   @override
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();

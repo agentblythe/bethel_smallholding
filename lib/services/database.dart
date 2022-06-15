@@ -16,13 +16,13 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> createBlogPost(BlogPost blogPostData) => _service.setData(
-        path: APIPath.BlogPost("test_id_123"),
+        path: APIPath.blogPost("test_id_123"),
         data: blogPostData.toMap(),
       );
 
   @override
   Future<bool> isAdmin(String uid) async {
-    var data = await _service.getCollection(path: APIPath.AdminUsers);
+    var data = await _service.getCollection(path: APIPath.adminUsers);
     var docs = data.docs;
 
     List<String> ids = docs
@@ -36,7 +36,7 @@ class FirestoreDatabase implements Database {
 
   @override
   Stream<List<BlogPost>> blogPostsStream() => _service.collectionStream(
-        path: APIPath.BlogPosts,
+        path: APIPath.blogPosts,
         builder: (data) => BlogPost.fromMap(data),
       );
 }

@@ -11,12 +11,14 @@ abstract class Database {
   Stream<List<BlogPost>> blogPostsStream();
 }
 
+String documentIDFromCurrentDate() => DateTime.now().toIso8601String();
+
 class FirestoreDatabase implements Database {
   final _service = FireStoreService.instance;
 
   @override
-  Future<void> createBlogPost(BlogPost blogPostData) => _service.setData(
-        path: APIPath.blogPost("test_id_123"),
+  Future<void> createBlogPost(BlogPost blogPostData) async => _service.setData(
+        path: APIPath.blogPost(documentIDFromCurrentDate()),
         data: blogPostData.toMap(),
       );
 

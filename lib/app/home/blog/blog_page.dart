@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/app/home/blog/add_blog_page.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
@@ -35,25 +36,6 @@ class BlogPage extends StatelessWidget {
     }
   }
 
-  Future<void> _createBlogPost(BuildContext context) async {
-    try {
-      final database = Provider.of<Database>(context, listen: false);
-      await database.createBlogPost(
-        BlogPost(
-          title: "test title",
-          content: "test content",
-          dateTime: DateTime.now(),
-        ),
-      );
-    } on FirebaseException catch (e) {
-      showExceptionAlertDialog(
-        context,
-        title: "Operation Failed",
-        exception: e,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
@@ -66,6 +48,7 @@ class BlogPage extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: _blogTitle,
+              elevation: 2.0,
             ),
             body: const Center(
               child: CircularProgressIndicator(),
@@ -75,6 +58,7 @@ class BlogPage extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: _blogTitle,
+              elevation: 2.0,
               actions: <Widget>[
                 TextButton(
                   onPressed: () => _confirmSignOut(context),
@@ -92,7 +76,7 @@ class BlogPage extends StatelessWidget {
             floatingActionButton: Visibility(
               child: FloatingActionButton(
                 child: const Icon(Icons.add),
-                onPressed: () {},
+                onPressed: () => AddBlogPage.show(context),
               ),
               visible: snapshot.data == true,
             ),

@@ -1,3 +1,4 @@
+import 'package:bethel_smallholding/app/home/blog/add_blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
@@ -7,22 +8,37 @@ import 'package:provider/provider.dart';
 
 class AddBlogPage extends StatefulWidget {
   final Database database;
+  AddBlogPostModel model;
 
-  const AddBlogPage({
+  AddBlogPage({
     Key? key,
     required this.database,
+    required this.model,
   }) : super(key: key);
 
   static Future<void> show(BuildContext context) async {
     // This context is the one which knows about Database as it is sent
-    // from the Blog Page
+    // from the Blog Page.  The way navigation to this page worked is that
+    // a new material route was added to the Material App and as such
+    // this widget cannot access the database because database is not in
+    // the widget tree at MaterialApp level
     final database = Provider.of<Database>(context, listen: false);
 
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => AddBlogPage(
-          database: database,
-        ),
+        builder: (context) {
+          return ChangeNotifierProvider<AddBlogPostModel>(
+            create: (_) => AddBlogPostModel(),
+            child: Consumer<AddBlogPostModel>(
+              builder: (_, model, __) {
+                return AddBlogPage(
+                  database: database,
+                  model: model,
+                );
+              },
+            ),
+          );
+        },
         fullscreenDialog: true,
       ),
     );
@@ -35,14 +51,15 @@ class AddBlogPage extends StatefulWidget {
 class _AddBlogPageState extends State<AddBlogPage> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _title;
-  String? _content;
+  AddBlogPostModel get model => widget.model;
 
   Future<void> _submitForm() async {
+    model.submit();
+
     if (_validateAndSaveForm()) {
       final blogPost = BlogPost(
-        title: _title!,
-        content: _content!,
+        title: model.title,
+        content: model.content,
         dateTime: DateTime.now(),
       );
 
@@ -120,24 +137,22 @@ class _AddBlogPageState extends State<AddBlogPage> {
   List<Widget> _buildFormChildren() {
     return [
       TextFormField(
-        decoration: const InputDecoration(labelText: "Blog Post Title"),
-        onSaved: (value) => _title = value,
-        validator: (value) {
-          return (value == null || value.isEmpty)
-              ? "Title can't be empty"
-              : null;
-        },
+        decoration: InputDecoration(
+          labelText: "Blog Post Title",
+          errorText: model.titleErrorText,
+        ),
+        validator: (_) => model.titleErrorText,
+        onChanged: model.updateTitle,
       ),
       TextFormField(
-        decoration: const InputDecoration(labelText: "Blog Post Content"),
+        decoration: InputDecoration(
+          labelText: "Blog Post Content",
+          errorText: model.contentErrorText,
+        ),
         maxLines: null,
         keyboardType: TextInputType.multiline,
-        onSaved: (value) => _content = value,
-        validator: (value) {
-          return (value == null || value.isEmpty)
-              ? "Content can't be empty"
-              : null;
-        },
+        validator: (_) => model.contentErrorText,
+        onChanged: model.updateContent,
       ),
     ];
   }

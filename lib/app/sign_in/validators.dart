@@ -1,6 +1,4 @@
-abstract class StringValidator {
-  bool isValid(String value);
-}
+import 'package:bethel_smallholding/app/utilities/validators.dart';
 
 class EmailValidator implements StringValidator {
   String get error => _error;

@@ -51,6 +51,9 @@ class AddBlogPage extends StatefulWidget {
 class _AddBlogPageState extends State<AddBlogPage> {
   final _formKey = GlobalKey<FormState>();
 
+  final FocusNode _titleFocusNode = FocusNode();
+  final FocusNode _contentFocusNode = FocusNode();
+
   AddBlogPostModel get model => widget.model;
 
   Future<void> _submitForm() async {
@@ -141,19 +144,31 @@ class _AddBlogPageState extends State<AddBlogPage> {
           labelText: "Blog Post Title",
           errorText: model.titleErrorText,
         ),
+        focusNode: _titleFocusNode,
         validator: (_) => model.titleErrorText,
+        textInputAction: TextInputAction.next,
         onChanged: model.updateTitle,
+        onEditingComplete: _titleEditingComplete,
       ),
       TextFormField(
         decoration: InputDecoration(
           labelText: "Blog Post Content",
           errorText: model.contentErrorText,
         ),
+        focusNode: _contentFocusNode,
         maxLines: null,
         keyboardType: TextInputType.multiline,
         validator: (_) => model.contentErrorText,
+        textInputAction: TextInputAction.done,
         onChanged: model.updateContent,
       ),
     ];
+  }
+
+  void _titleEditingComplete() {
+    final newFocus = model.titleValidator.isValid(model.title)
+        ? _contentFocusNode
+        : _titleFocusNode;
+    FocusScope.of(context).requestFocus(newFocus);
   }
 }

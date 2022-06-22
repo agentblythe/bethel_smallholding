@@ -1,10 +1,9 @@
 import 'package:bethel_smallholding/app/home/blog/add_blog_page.dart';
+import 'package:bethel_smallholding/app/home/blog/blog_post_tile.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
-import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:bethel_smallholding/services/database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -96,8 +95,11 @@ class BlogPage extends StatelessWidget {
         if (snapshot.hasData) {
           final blogPosts = snapshot.data;
           if (blogPosts != null) {
-            final children =
-                blogPosts.map((blogPost) => Text(blogPost.title)).toList();
+            final children = blogPosts
+                .map((blogPost) => BlogPostTile(
+                      blogPost: blogPost,
+                    ))
+                .toList();
             return ListView(
               children: children,
             );

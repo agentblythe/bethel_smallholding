@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/app/home/blog/add_blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
+import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -67,9 +68,23 @@ class _AddBlogPageState extends State<AddBlogPage> {
       );
 
       try {
+        // Code to reject duplicate Blog Post Titles
+        // // Gets the first (most up to date) value on the stream
+        // final blogPosts = await widget.database.blogPostsStream().first;
+        // final allTitles = blogPosts.map((blogPost) => blogPost.title).toList();
+        // if (allTitles.contains(blogPost.title)) {
+        //   showAlertDialog(
+        //     context,
+        //     title: "Blog Post Title already in use",
+        //     content: "Please choose a different Blog Post Title",
+        //     defaultAction: AlertAction(
+        //       text: "OK",
+        //     ),
+        //   );
+        //} else {
         await widget.database.createBlogPost(blogPost);
-
         Navigator.of(context).pop();
+        //}
       } on FirebaseException catch (e) {
         showExceptionAlertDialog(
           context,

@@ -1,7 +1,7 @@
 import 'package:bethel_smallholding/app/home/blog/validators.dart';
 import 'package:flutter/foundation.dart';
 
-class AddBlogPostModel with BlogPostValidators, ChangeNotifier {
+class BlogPostModel with BlogPostValidators, ChangeNotifier {
   String title;
   String content;
 
@@ -10,7 +10,7 @@ class AddBlogPostModel with BlogPostValidators, ChangeNotifier {
   bool titleNextPressed;
   bool contentDonePressed;
 
-  AddBlogPostModel({
+  BlogPostModel({
     this.title = "",
     this.content = "",
     this.submittedTapped = false,

@@ -1,17 +1,16 @@
-import 'package:bethel_smallholding/app/home/blog/add_blog_post_model.dart';
+import 'package:bethel_smallholding/app/home/blog/blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
-import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddBlogPage extends StatefulWidget {
+class EditBlogPostPage extends StatefulWidget {
   final Database database;
-  AddBlogPostModel model;
+  BlogPostModel model;
 
-  AddBlogPage({
+  EditBlogPostPage({
     Key? key,
     required this.database,
     required this.model,
@@ -28,11 +27,11 @@ class AddBlogPage extends StatefulWidget {
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
-          return ChangeNotifierProvider<AddBlogPostModel>(
-            create: (_) => AddBlogPostModel(),
-            child: Consumer<AddBlogPostModel>(
+          return ChangeNotifierProvider<BlogPostModel>(
+            create: (_) => BlogPostModel(),
+            child: Consumer<BlogPostModel>(
               builder: (_, model, __) {
-                return AddBlogPage(
+                return EditBlogPostPage(
                   database: database,
                   model: model,
                 );
@@ -46,16 +45,16 @@ class AddBlogPage extends StatefulWidget {
   }
 
   @override
-  State<AddBlogPage> createState() => _AddBlogPageState();
+  State<EditBlogPostPage> createState() => _EditBlogPostPageState();
 }
 
-class _AddBlogPageState extends State<AddBlogPage> {
+class _EditBlogPostPageState extends State<EditBlogPostPage> {
   final _formKey = GlobalKey<FormState>();
 
   final FocusNode _titleFocusNode = FocusNode();
   final FocusNode _contentFocusNode = FocusNode();
 
-  AddBlogPostModel get model => widget.model;
+  BlogPostModel get model => widget.model;
 
   Future<void> _submitForm() async {
     model.updateWith(submittedTapped: true, submitting: true);

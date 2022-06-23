@@ -1,4 +1,4 @@
-import 'package:bethel_smallholding/app/home/blog/add_blog_page.dart';
+import 'package:bethel_smallholding/app/home/blog/edit_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/blog/blog_post_tile.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
@@ -75,7 +75,7 @@ class BlogPage extends StatelessWidget {
             floatingActionButton: Visibility(
               child: FloatingActionButton(
                 child: const Icon(Icons.add),
-                onPressed: () => AddBlogPage.show(context),
+                onPressed: () => EditBlogPostPage.show(context),
               ),
               visible: snapshot.data == true,
             ),

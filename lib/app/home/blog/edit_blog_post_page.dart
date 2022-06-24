@@ -117,8 +117,9 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(widget.blogPost == null ? "Add Blog Post" : "Edit Blog Post"),
+        title: Text(
+          widget.blogPost == null ? "Add Blog Post" : "Edit Blog Post",
+        ),
         elevation: 2.0,
         actions: [
           Visibility(
@@ -183,6 +184,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         ),
         initialValue: model.title,
         focusNode: _titleFocusNode,
+        maxLines: null,
         validator: (_) => model.titleErrorText,
         textInputAction: TextInputAction.next,
         onChanged: model.updateTitle,

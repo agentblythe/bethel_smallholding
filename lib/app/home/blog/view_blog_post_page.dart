@@ -29,11 +29,30 @@ class ViewBlogPostPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Text(blogPost.title),
-            ],
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextFormField(
+                      initialValue: blogPost.title,
+                      readOnly: true,
+                      enabled: false,
+                      maxLines: null,
+                    ),
+                    TextFormField(
+                      initialValue: blogPost.content,
+                      readOnly: true,
+                      enabled: false,
+                      maxLines: null,
+                    )
+                  ],
+                ),
+              ),
+            ),
           ),
         ),
       ),

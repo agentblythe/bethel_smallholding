@@ -12,7 +12,6 @@ class BlogPost {
 
   Map<String, dynamic> toMap() {
     return {
-      "id": id,
       "title": title,
       "content": content,
       "dateTime": dateTime,

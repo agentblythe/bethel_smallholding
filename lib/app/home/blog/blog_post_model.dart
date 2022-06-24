@@ -1,4 +1,5 @@
 import 'package:bethel_smallholding/app/home/blog/validators.dart';
+import 'package:bethel_smallholding/services/database.dart';
 import 'package:flutter/foundation.dart';
 
 class BlogPostModel with BlogPostValidators, ChangeNotifier {
@@ -43,6 +44,8 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   void titleNextTapped() => updateWith(titleNextPressed: true);
 
   void contentDoneTapped() => updateWith(contentDonePressed: true);
+
+  String getID() => id == "" ? documentIDFromCurrentDate() : id;
 
   void updateWith({
     String? id,

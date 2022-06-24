@@ -26,21 +26,14 @@ class EditBlogPostPage extends StatefulWidget {
     // the widget tree at MaterialApp level
     final database = Provider.of<Database>(context, listen: false);
 
-    // Get the current values if there are any
-    // For a new post, the blogPost will be null
-    // For an existing post, the blogPost will not be null
-    String title = blogPost?.title ?? "";
-    String content = blogPost?.content ?? "";
-    String id = blogPost?.id ?? "";
-
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
           return ChangeNotifierProvider<BlogPostModel>(
             create: (_) => BlogPostModel(
-              id: id,
-              title: title,
-              content: content,
+              id: blogPost?.id ?? "",
+              title: blogPost?.title ?? "",
+              content: blogPost?.content ?? "",
             ),
             child: Consumer<BlogPostModel>(
               builder: (_, model, __) {
@@ -75,7 +68,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
     if (_validateAndSaveForm()) {
       final blogPost = BlogPost(
-        id: widget.blogPost?.id ?? documentIDFromCurrentDate(),
+        id: model.getID(),
         title: model.title,
         content: model.content,
         dateTime: DateTime.now(),

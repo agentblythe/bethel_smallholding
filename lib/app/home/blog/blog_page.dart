@@ -98,7 +98,10 @@ class BlogPage extends StatelessWidget {
             final children = blogPosts
                 .map((blogPost) => BlogPostTile(
                       blogPost: blogPost,
-                      onTap: () {},
+                      onTap: () => EditBlogPostPage.show(
+                        context,
+                        blogPost: blogPost,
+                      ),
                     ))
                 .toList();
             return ListView(

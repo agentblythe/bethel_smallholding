@@ -4,7 +4,7 @@ import 'package:bethel_smallholding/services/firestore_service.dart';
 
 abstract class Database {
   // CREATE , UPDATE , DELETE
-  Future<void> createBlogPost(BlogPost blogPostData);
+  Future<void> setBlogPost(BlogPost blogPostData);
 
   // READ
   Future<bool> isAdmin(String uid);
@@ -17,8 +17,8 @@ class FirestoreDatabase implements Database {
   final _service = FireStoreService.instance;
 
   @override
-  Future<void> createBlogPost(BlogPost blogPostData) async => _service.setData(
-        path: APIPath.blogPost(documentIDFromCurrentDate()),
+  Future<void> setBlogPost(BlogPost blogPostData) async => _service.setData(
+        path: APIPath.blogPost(blogPostData.id),
         data: blogPostData.toMap(),
       );
 
@@ -39,6 +39,6 @@ class FirestoreDatabase implements Database {
   @override
   Stream<List<BlogPost>> blogPostsStream() => _service.collectionStream(
         path: APIPath.blogPosts,
-        builder: (data) => BlogPost.fromMap(data),
+        builder: (data, documentID) => BlogPost.fromMap(data, documentID),
       );
 }

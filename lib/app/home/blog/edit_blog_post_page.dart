@@ -9,14 +9,16 @@ import 'package:provider/provider.dart';
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
   BlogPostModel model;
+  final BlogPost? blogPost;
 
   EditBlogPostPage({
     Key? key,
     required this.database,
     required this.model,
+    this.blogPost,
   }) : super(key: key);
 
-  static Future<void> show(BuildContext context) async {
+  static Future<void> show(BuildContext context, {BlogPost? blogPost}) async {
     // This context is the one which knows about Database as it is sent
     // from the Blog Page.  The way navigation to this page worked is that
     // a new material route was added to the Material App and as such
@@ -24,16 +26,28 @@ class EditBlogPostPage extends StatefulWidget {
     // the widget tree at MaterialApp level
     final database = Provider.of<Database>(context, listen: false);
 
+    // Get the current values if there are any
+    // For a new post, the blogPost will be null
+    // For an existing post, the blogPost will not be null
+    String title = blogPost?.title ?? "";
+    String content = blogPost?.content ?? "";
+    String id = blogPost?.id ?? "";
+
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) {
           return ChangeNotifierProvider<BlogPostModel>(
-            create: (_) => BlogPostModel(),
+            create: (_) => BlogPostModel(
+              id: id,
+              title: title,
+              content: content,
+            ),
             child: Consumer<BlogPostModel>(
               builder: (_, model, __) {
                 return EditBlogPostPage(
                   database: database,
                   model: model,
+                  blogPost: blogPost,
                 );
               },
             ),
@@ -61,6 +75,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
     if (_validateAndSaveForm()) {
       final blogPost = BlogPost(
+        id: widget.blogPost?.id ?? documentIDFromCurrentDate(),
         title: model.title,
         content: model.content,
         dateTime: DateTime.now(),
@@ -81,7 +96,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         //     ),
         //   );
         //} else {
-        await widget.database.createBlogPost(blogPost);
+        await widget.database.setBlogPost(blogPost);
         Navigator.of(context).pop();
         //}
       } on FirebaseException catch (e) {
@@ -109,7 +124,8 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Blog Post"),
+        title:
+            Text(widget.blogPost == null ? "Add Blog Post" : "Edit Blog Post"),
         elevation: 2.0,
         actions: [
           Visibility(
@@ -172,6 +188,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
           errorText: model.titleErrorText,
           enabled: !model.submitting,
         ),
+        initialValue: model.title,
         focusNode: _titleFocusNode,
         validator: (_) => model.titleErrorText,
         textInputAction: TextInputAction.next,
@@ -184,6 +201,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
           errorText: model.contentErrorText,
           enabled: !model.submitting,
         ),
+        initialValue: model.content,
         focusNode: _contentFocusNode,
         maxLines: null,
         keyboardType: TextInputType.multiline,

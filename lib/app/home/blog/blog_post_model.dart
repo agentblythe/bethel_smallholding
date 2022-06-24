@@ -2,6 +2,7 @@ import 'package:bethel_smallholding/app/home/blog/validators.dart';
 import 'package:flutter/foundation.dart';
 
 class BlogPostModel with BlogPostValidators, ChangeNotifier {
+  String id;
   String title;
   String content;
 
@@ -11,6 +12,7 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   bool contentDonePressed;
 
   BlogPostModel({
+    this.id = "",
     this.title = "",
     this.content = "",
     this.submittedTapped = false,
@@ -43,6 +45,7 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   void contentDoneTapped() => updateWith(contentDonePressed: true);
 
   void updateWith({
+    String? id,
     String? title,
     String? content,
     bool? submittedTapped,
@@ -50,6 +53,7 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
     bool? titleNextPressed,
     bool? contentDonePressed,
   }) {
+    this.id = id ?? this.id;
     this.title = title ?? this.title;
     this.content = content ?? this.content;
     this.submittedTapped = submittedTapped ?? this.submittedTapped;

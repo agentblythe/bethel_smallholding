@@ -6,7 +6,7 @@ class FireStoreService {
 
   Stream<List<T>> collectionStream<T>({
     required String path,
-    required T Function(Map<String, dynamic> data) builder,
+    required T Function(Map<String, dynamic> data, String documentID) builder,
   }) {
     final reference = FirebaseFirestore.instance.collection(path);
     final snapshots = reference.snapshots();
@@ -16,6 +16,7 @@ class FireStoreService {
               .map(
                 (docSnap) => builder(
                   docSnap.data(),
+                  docSnap.id,
                 ),
               )
               .toList(),
@@ -25,7 +26,7 @@ class FireStoreService {
   Future<void> setData(
       {required String path, required Map<String, dynamic> data}) async {
     final reference = FirebaseFirestore.instance.doc(path);
-    print("$path: $data");
+    //print("$path: $data");
     await reference.set(data);
   }
 

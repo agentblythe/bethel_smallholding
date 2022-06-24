@@ -1,6 +1,7 @@
 import 'package:bethel_smallholding/app/sign_in/validators.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'email_sign_in_model.dart';
 

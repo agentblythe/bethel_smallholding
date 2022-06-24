@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/app/home/blog/edit_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/blog/blog_post_tile.dart';
+import 'package:bethel_smallholding/app/home/blog/view_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
 import 'package:bethel_smallholding/services/auth.dart';
@@ -71,7 +72,7 @@ class BlogPage extends StatelessWidget {
                 )
               ],
             ),
-            body: _buildContents(context),
+            body: _buildContents(context, snapshot.data == true),
             floatingActionButton: Visibility(
               child: FloatingActionButton(
                 child: const Icon(Icons.add),
@@ -87,8 +88,9 @@ class BlogPage extends StatelessWidget {
 
   Widget get _blogTitle => const Text("Blog");
 
-  Widget _buildContents(BuildContext context) {
+  Widget _buildContents(BuildContext context, bool isAdmin) {
     final database = Provider.of<Database>(context, listen: false);
+
     return StreamBuilder<List<BlogPost>>(
       stream: database.blogPostsStream(),
       builder: (context, snapshot) {
@@ -96,13 +98,15 @@ class BlogPage extends StatelessWidget {
           final blogPosts = snapshot.data;
           if (blogPosts != null) {
             final children = blogPosts
-                .map((blogPost) => BlogPostTile(
-                      blogPost: blogPost,
-                      onTap: () => EditBlogPostPage.show(
-                        context,
-                        blogPost: blogPost,
-                      ),
-                    ))
+                .map(
+                  (blogPost) => BlogPostTile(
+                    blogPost: blogPost,
+                    onTap: () => ViewBlogPostPage.show(context, blogPost),
+                    onLongPress: () => isAdmin
+                        ? EditBlogPostPage.show(context, blogPost: blogPost)
+                        : null,
+                  ),
+                )
                 .toList();
             return ListView(
               children: children,

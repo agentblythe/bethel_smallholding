@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ViewBlogPostPage extends StatelessWidget {
   final BlogPost blogPost;
@@ -20,6 +21,11 @@ class ViewBlogPostPage extends StatelessWidget {
     );
   }
 
+  String getDateFormatted(DateTime dateTime) {
+    final DateFormat formatter = DateFormat("dd/MM/yyyy hh:mm:ss");
+    return formatter.format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +43,17 @@ class ViewBlogPostPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Row(
+                      children: [
+                        const Spacer(),
+                        Text(
+                          getDateFormatted(blogPost.dateTime),
+                          style: const TextStyle(
+                            fontSize: 10.0,
+                          ),
+                        ),
+                      ],
+                    ),
                     TextFormField(
                       initialValue: blogPost.title,
                       readOnly: true,

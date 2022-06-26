@@ -50,6 +50,7 @@ class ViewBlogPostPage extends StatelessWidget {
                           getDateFormatted(blogPost.dateTime),
                           style: const TextStyle(
                             fontSize: 10.0,
+                            fontStyle: FontStyle.italic,
                           ),
                         ),
                       ],

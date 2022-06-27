@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bethel_smallholding/app/home/blog/blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
@@ -63,6 +65,8 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
   BlogPostModel get model => widget.model;
 
+  List<File> images = <File>[];
+
   Future<void> _submitForm() async {
     model.updateWith(submittedTapped: true, submitting: true);
 
@@ -120,6 +124,12 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         title: Text(
           widget.blogPost == null ? "Add Blog Post" : "Edit Blog Post",
         ),
+        bottom: model.submitting
+            ? const PreferredSize(
+                child: LinearProgressIndicator(),
+                preferredSize: Size.fromHeight(6.0),
+              )
+            : null,
         elevation: 2.0,
         actions: [
           Visibility(
@@ -143,24 +153,16 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
   }
 
   Widget _buildContents() {
-    return Column(
-      children: [
-        Visibility(
-          child: const LinearProgressIndicator(),
-          visible: model.submitting,
-        ),
-        SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _buildForm(),
-              ),
-            ),
+            child: _buildForm(),
           ),
         ),
-      ],
+      ),
     );
   }
 
@@ -169,12 +171,12 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildFormChildren(),
+        children: _buildChildren(),
       ),
     );
   }
 
-  List<Widget> _buildFormChildren() {
+  List<Widget> _buildChildren() {
     return [
       TextFormField(
         decoration: InputDecoration(

@@ -5,8 +5,11 @@ import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
@@ -36,6 +39,7 @@ class EditBlogPostPage extends StatefulWidget {
               id: blogPost?.id ?? "",
               title: blogPost?.title ?? "",
               content: blogPost?.content ?? "",
+              imageUrls: blogPost?.imageUrls ?? [],
             ),
             child: Consumer<BlogPostModel>(
               builder: (_, model, __) {
@@ -65,16 +69,30 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
   BlogPostModel get model => widget.model;
 
-  List<File> images = <File>[];
+  List<String> localImageUrls = [];
 
   Future<void> _submitForm() async {
     model.updateWith(submittedTapped: true, submitting: true);
 
     if (_validateAndSaveForm()) {
+      if (localImageUrls.isNotEmpty) {
+        FirebaseStorage _storage = FirebaseStorage.instance;
+
+        for (var localImageUrl in localImageUrls) {
+          String id = Uuid().v4();
+          Reference reference = _storage.ref().child("blog_post_images/$id");
+          var file = File(localImageUrl);
+          await reference.putFile(file);
+          var url = await reference.getDownloadURL();
+          model.addImageUrl(url);
+        }
+      }
+
       final blogPost = BlogPost(
         id: model.getID(),
         title: model.title,
         content: model.content,
+        imageUrls: model.imageUrls,
         dateTime: DateTime.now(),
       );
 
@@ -148,8 +166,46 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         ],
       ),
       body: _buildContents(),
+      persistentFooterButtons: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () => _getImage(ImageSource.camera),
+              icon: const Icon(Icons.camera_alt),
+            ),
+            IconButton(
+              onPressed: () => _getImage(ImageSource.gallery),
+              icon: const Icon(Icons.image),
+            ),
+            if (widget.blogPost != null)
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.delete),
+                color: Colors.red[600],
+              ),
+          ],
+        ),
+      ],
       backgroundColor: Colors.grey[200],
     );
+  }
+
+  void _getImage(ImageSource source) async {
+    XFile? file = await ImagePicker().pickImage(
+      source: source,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (file != null) {
+      setState(() {
+        localImageUrls.add(file.path);
+      });
+    }
+  }
+
+  void _deleteTapped() {
+    print("_deleteTapped");
   }
 
   Widget _buildContents() {
@@ -178,36 +234,80 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
   List<Widget> _buildChildren() {
     return [
-      TextFormField(
-        decoration: InputDecoration(
-          labelText: "Blog Post Title",
-          errorText: model.titleErrorText,
-          enabled: !model.submitting,
-        ),
-        initialValue: model.title,
-        focusNode: _titleFocusNode,
-        maxLines: null,
-        validator: (_) => model.titleErrorText,
-        textInputAction: TextInputAction.next,
-        onChanged: model.updateTitle,
-        onEditingComplete: _titleEditingComplete,
-      ),
-      TextFormField(
-        decoration: InputDecoration(
-          labelText: "Blog Post Content",
-          errorText: model.contentErrorText,
-          enabled: !model.submitting,
-        ),
-        initialValue: model.content,
-        focusNode: _contentFocusNode,
-        maxLines: null,
-        keyboardType: TextInputType.multiline,
-        validator: (_) => model.contentErrorText,
-        textInputAction: TextInputAction.newline,
-        onChanged: model.updateContent,
-        onEditingComplete: _contentEditingComplete,
-      ),
+      _buildTitleTextField(),
+      _buildContentTextField(),
+      if (localImageUrls.isNotEmpty) _buildImagesField(),
     ];
+  }
+
+  Widget _buildTitleTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Blog Post Title",
+        errorText: model.titleErrorText,
+        enabled: !model.submitting,
+      ),
+      initialValue: model.title,
+      focusNode: _titleFocusNode,
+      maxLines: null,
+      validator: (_) => model.titleErrorText,
+      textInputAction: TextInputAction.next,
+      onChanged: model.updateTitle,
+      onEditingComplete: _titleEditingComplete,
+    );
+  }
+
+  Widget _buildContentTextField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Blog Post Content",
+        errorText: model.contentErrorText,
+        enabled: !model.submitting,
+      ),
+      initialValue: model.content,
+      focusNode: _contentFocusNode,
+      maxLines: null,
+      keyboardType: TextInputType.multiline,
+      validator: (_) => model.contentErrorText,
+      textInputAction: TextInputAction.newline,
+      onChanged: model.updateContent,
+      onEditingComplete: _contentEditingComplete,
+    );
+  }
+
+  Widget _buildImagesField() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+        ),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: localImageUrls.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Container(
+              alignment: Alignment.center,
+              child: Image(
+                image: FileImage(
+                  File(localImageUrls[index]),
+                ),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 
   void _titleEditingComplete() {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bethel_smallholding/app/home/blog/validators.dart';
 import 'package:bethel_smallholding/services/database.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,7 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   String id;
   String title;
   String content;
+  List<String> imageUrls;
 
   bool submittedTapped;
   bool submitting;
@@ -13,9 +16,10 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   bool contentDonePressed;
 
   BlogPostModel({
-    this.id = "",
-    this.title = "",
-    this.content = "",
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.imageUrls,
     this.submittedTapped = false,
     this.submitting = false,
     this.titleNextPressed = false,
@@ -47,10 +51,16 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
 
   String getID() => id == "" ? documentIDFromCurrentDate() : id;
 
+  void addImageUrl(String imageUrl) {
+    imageUrls.add(imageUrl);
+    updateWith(imageUrls: imageUrls);
+  }
+
   void updateWith({
     String? id,
     String? title,
     String? content,
+    List<String>? imageUrls,
     bool? submittedTapped,
     bool? submitting,
     bool? titleNextPressed,
@@ -59,6 +69,8 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
     this.id = id ?? this.id;
     this.title = title ?? this.title;
     this.content = content ?? this.content;
+    this.imageUrls = imageUrls ?? this.imageUrls;
+
     this.submittedTapped = submittedTapped ?? this.submittedTapped;
     this.submitting = submitting ?? this.submitting;
     this.titleNextPressed = titleNextPressed ?? this.titleNextPressed;

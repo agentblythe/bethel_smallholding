@@ -4,7 +4,6 @@ import 'package:bethel_smallholding/app/home/blog/blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -79,7 +78,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         FirebaseStorage _storage = FirebaseStorage.instance;
 
         for (var localImageUrl in localImageUrls) {
-          String id = Uuid().v4();
+          String id = const Uuid().v4();
           Reference reference = _storage.ref().child("blog_post_images/$id");
           var file = File(localImageUrl);
           await reference.putFile(file);
@@ -171,16 +170,19 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              onPressed: () => _getImage(ImageSource.camera),
+              onPressed:
+                  model.submitting ? null : () => _getImage(ImageSource.camera),
               icon: const Icon(Icons.camera_alt),
             ),
             IconButton(
-              onPressed: () => _getImage(ImageSource.gallery),
+              onPressed: model.submitting
+                  ? null
+                  : () => _getImage(ImageSource.gallery),
               icon: const Icon(Icons.image),
             ),
             if (widget.blogPost != null)
               IconButton(
-                onPressed: () {},
+                onPressed: model.submitting ? null : () {},
                 icon: const Icon(Icons.delete),
                 color: Colors.red[600],
               ),
@@ -202,10 +204,6 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         localImageUrls.add(file.path);
       });
     }
-  }
-
-  void _deleteTapped() {
-    print("_deleteTapped");
   }
 
   Widget _buildContents() {
@@ -232,11 +230,14 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
     );
   }
 
+  List<String> get _images =>
+      widget.blogPost == null ? localImageUrls : widget.blogPost!.imageUrls;
+
   List<Widget> _buildChildren() {
     return [
       _buildTitleTextField(),
       _buildContentTextField(),
-      if (localImageUrls.isNotEmpty) _buildImagesField(),
+      if (_images.isNotEmpty) _buildImagesField(),
     ];
   }
 
@@ -284,25 +285,19 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         ),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: localImageUrls.length,
+        itemCount: _images.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: Container(
               alignment: Alignment.center,
-              child: Image(
-                image: FileImage(
-                  File(localImageUrls[index]),
-                ),
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+              child: widget.blogPost == null
+                  ? Image.file(
+                      File(localImageUrls[index]),
+                    )
+                  : Image.network(
+                      widget.blogPost!.imageUrls[index],
+                    ),
             ),
           );
         },

@@ -4,11 +4,11 @@ import 'package:bethel_smallholding/app/home/blog/blog_post_model.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_exception_alert_dialog.dart';
 import 'package:bethel_smallholding/services/database.dart';
+import 'package:bethel_smallholding/services/storage_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:uuid/uuid.dart';
 
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
@@ -75,15 +75,19 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
     if (_validateAndSaveForm()) {
       if (localImageUrls.isNotEmpty) {
-        FirebaseStorage _storage = FirebaseStorage.instance;
+        //var storageService = StorageService.instance;
+        //FirebaseStorage _storage = FirebaseStorage.instance;
 
         for (var localImageUrl in localImageUrls) {
-          String id = const Uuid().v4();
-          Reference reference = _storage.ref().child("blog_post_images/$id");
-          var file = File(localImageUrl);
-          await reference.putFile(file);
-          var url = await reference.getDownloadURL();
-          model.addImageUrl(url);
+          var remoteURL = await widget.database.putFile(localImageUrl);
+          model.addImageUrl(remoteURL);
+
+          //String id = const Uuid().v4();
+          //Reference reference = _storage.ref().child("blog_post_images/$id");
+          //var file = File(localImageUrl);
+          //await reference.putFile(file);
+          //var url = await reference.getDownloadURL();
+          //model.addImageUrl(url);
         }
       }
 

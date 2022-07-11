@@ -1,10 +1,14 @@
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/services/api_path.dart';
 import 'package:bethel_smallholding/services/firestore_service.dart';
+import 'package:bethel_smallholding/services/storage_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class Database {
   // CREATE , UPDATE , DELETE
   Future<void> setBlogPost(BlogPost blogPostData);
+  Future<String> putFile(String filePath);
 
   // READ
   Future<bool> isAdmin(String uid);
@@ -15,6 +19,7 @@ String documentIDFromCurrentDate() => DateTime.now().toIso8601String();
 
 class FirestoreDatabase implements Database {
   final _service = FireStoreService.instance;
+  final _storage = StorageService.instance;
 
   @override
   Future<void> setBlogPost(BlogPost blogPostData) async => _service.setData(
@@ -34,6 +39,11 @@ class FirestoreDatabase implements Database {
         .toList();
 
     return ids.contains(uid);
+  }
+
+  @override
+  Future<String> putFile(String filePath) async {
+    return await _storage.putFile(filePath);
   }
 
   @override

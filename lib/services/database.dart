@@ -2,8 +2,6 @@ import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/services/api_path.dart';
 import 'package:bethel_smallholding/services/firestore_service.dart';
 import 'package:bethel_smallholding/services/storage_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:uuid/uuid.dart';
 
 abstract class Database {
   // CREATE , UPDATE , DELETE

@@ -52,7 +52,7 @@ class EmailSignInModel with EmailAndPasswordValidators {
     return null;
   }
 
-  EmailSignInModel CopyWith({
+  EmailSignInModel copyWith({
     String? email,
     String? password,
     EmailSignInFormType? formType,

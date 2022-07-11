@@ -62,7 +62,7 @@ class EmailSignInBloc {
     bool? submitted,
     bool? hidePassword,
   }) {
-    _model = _model.CopyWith(
+    _model = _model.copyWith(
       email: email,
       password: password,
       formType: formType,

@@ -2,16 +2,17 @@ import 'package:bethel_smallholding/common_widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class FormSubmitButton extends CustomElevatedButton {
-  final Widget child;
+  final Widget newChild;
   final VoidCallback? callback;
 
-  FormSubmitButton({
+  const FormSubmitButton({
     Key? key,
-    required this.child,
+    required this.newChild,
     required this.callback,
   }) : super(
+          key: key,
           buttonColor: Colors.blue,
-          child: child,
+          child: newChild,
           height: 44.0,
           onPressed: callback,
         );

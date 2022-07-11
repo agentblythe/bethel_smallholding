@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BlogPage extends StatelessWidget {
-  BlogPage({
+  const BlogPage({
     Key? key,
   }) : super(key: key);
 
@@ -18,7 +18,7 @@ class BlogPage extends StatelessWidget {
       final auth = Provider.of<AuthBase>(context, listen: false);
       await auth.signOut();
     } catch (e) {
-      print("Sign-out failed with exception: ${e.toString()}");
+      debugPrint("Sign-out failed with exception: ${e.toString()}");
     }
   }
 

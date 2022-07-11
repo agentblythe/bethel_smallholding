@@ -25,7 +25,7 @@ class LandingPage extends StatelessWidget {
           }
           return Provider<Database>(
             create: (_) => FirestoreDatabase(),
-            child: BlogPage(),
+            child: const BlogPage(),
           );
         }
         return const Scaffold(

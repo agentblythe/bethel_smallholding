@@ -1,4 +1,3 @@
-import 'package:bethel_smallholding/app/sign_in/email_sign_in_bloc.dart';
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_change_model.dart';
 import 'package:bethel_smallholding/app/sign_in/email_sign_in_model.dart';
 import 'package:bethel_smallholding/common_widgets/form_submit_button.dart';
@@ -10,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EmailSignInForm extends StatefulWidget {
-  EmailSignInForm({
+  const EmailSignInForm({
     Key? key,
     required this.model,
     //required this.bloc,
   }) : super(key: key);
 
   //final EmailSignInBloc bloc;
-  EmailSignInChangeModel model;
+  final EmailSignInChangeModel model;
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
@@ -111,7 +110,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       await auth.resetPassword(email);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } catch (e) {
-      print("Password reset failed with exception: ${e.toString()}");
+      debugPrint("Password reset failed with exception: ${e.toString()}");
     }
   }
 
@@ -130,7 +129,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       ),
       const SizedBox(height: 16),
       FormSubmitButton(
-        child: !model.isLoading
+        newChild: !model.isLoading
             ? Text(
                 model.primaryButtonText,
                 style: const TextStyle(

@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(BethelSmallholdingApp());
+  runApp(const BethelSmallholdingApp());
 }
 
 class BethelSmallholdingApp extends StatelessWidget {
@@ -25,7 +25,7 @@ class BethelSmallholdingApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: LandingPage(),
+        home: const LandingPage(),
       ),
     );
   }

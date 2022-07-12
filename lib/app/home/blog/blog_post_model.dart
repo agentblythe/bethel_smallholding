@@ -7,6 +7,7 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   String title;
   String content;
   List<String> imageUrls;
+  List<String> tempImageUrls = [];
 
   bool submittedTapped;
   bool submitting;
@@ -52,6 +53,11 @@ class BlogPostModel with BlogPostValidators, ChangeNotifier {
   void addImageUrl(String imageUrl) {
     imageUrls.add(imageUrl);
     updateWith(imageUrls: imageUrls);
+  }
+
+  void addTempImageUrl(String tempImageUrl) {
+    tempImageUrls.add(tempImageUrl);
+    notifyListeners();
   }
 
   void updateWith({

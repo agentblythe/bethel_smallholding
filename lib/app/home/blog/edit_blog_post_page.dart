@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
-  BlogPostModel model;
+  final BlogPostModel model;
   final BlogPost? blogPost;
 
-  EditBlogPostPage({
+  const EditBlogPostPage({
     Key? key,
     required this.database,
     required this.model,
@@ -67,17 +67,17 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
   BlogPostModel get model => widget.model;
 
-  List<String> localImageUrls = [];
+  //List<String> localImageUrls = [];
 
   Future<void> _submitForm() async {
     model.updateWith(submittedTapped: true, submitting: true);
 
     if (_validateAndSaveForm()) {
-      if (localImageUrls.isNotEmpty) {
+      if (model.tempImageUrls.isNotEmpty) {
         //var storageService = StorageService.instance;
         //FirebaseStorage _storage = FirebaseStorage.instance;
 
-        for (var localImageUrl in localImageUrls) {
+        for (var localImageUrl in model.tempImageUrls) {
           var remoteURL = await widget.database.putFile(localImageUrl);
           model.addImageUrl(remoteURL);
 
@@ -88,6 +88,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
           //var url = await reference.getDownloadURL();
           //model.addImageUrl(url);
         }
+        model.tempImageUrls.clear();
       }
 
       final blogPost = BlogPost(
@@ -203,9 +204,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
       maxHeight: 1800,
     );
     if (file != null) {
-      setState(() {
-        localImageUrls.add(file.path);
-      });
+      model.addTempImageUrl(file.path);
     }
   }
 
@@ -233,8 +232,9 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
     );
   }
 
-  List<String> get _images =>
-      widget.blogPost == null ? localImageUrls : widget.blogPost!.imageUrls;
+  List<String> get _images => widget.blogPost == null
+      ? model.tempImageUrls
+      : widget.blogPost!.imageUrls;
 
   List<Widget> _buildChildren() {
     return [
@@ -296,7 +296,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
               alignment: Alignment.center,
               child: widget.blogPost == null
                   ? Image.file(
-                      File(localImageUrls[index]),
+                      File(model.tempImageUrls[index]),
                     )
                   : Image.network(
                       widget.blogPost!.imageUrls[index],

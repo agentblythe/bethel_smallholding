@@ -131,6 +131,6 @@ class Auth implements AuthBase {
 
   @override
   Future<void> resetPassword(String email) async {
-    _firebaseAuth.sendPasswordResetEmail(email: email);
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bethel_smallholding/app/home/blog/edit_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/blog/blog_post_tile.dart';
+import 'package:bethel_smallholding/app/home/blog/empty_blog.dart';
 import 'package:bethel_smallholding/app/home/blog/view_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
@@ -96,22 +97,24 @@ class BlogPage extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final blogPosts = snapshot.data;
-          if (blogPosts != null) {
-            final children = blogPosts
-                .map(
-                  (blogPost) => BlogPostTile(
-                    blogPost: blogPost,
-                    onTap: () => ViewBlogPostPage.show(context, blogPost),
-                    onLongPress: () => isAdmin
-                        ? EditBlogPostPage.show(context, blogPost: blogPost)
-                        : null,
-                  ),
-                )
-                .toList();
-            return ListView(
-              children: children,
-            );
+          if (blogPosts == null || blogPosts.isEmpty) {
+            return const EmptyBlog();
           }
+
+          final children = blogPosts
+              .map(
+                (blogPost) => BlogPostTile(
+                  blogPost: blogPost,
+                  onTap: () => ViewBlogPostPage.show(context, blogPost),
+                  onLongPress: () => isAdmin
+                      ? EditBlogPostPage.show(context, blogPost: blogPost)
+                      : null,
+                ),
+              )
+              .toList();
+          return ListView(
+            children: children,
+          );
         }
         if (snapshot.hasError) {
           var error = snapshot.error.toString();

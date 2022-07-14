@@ -7,6 +7,8 @@ abstract class Database {
   // CREATE , UPDATE , DELETE
   Future<void> setBlogPost(BlogPost blogPostData);
   Future<String> putFile(String filePath);
+  Future<void> deleteBlogPost(BlogPost blogPost);
+  void deleteImagesFromBlogPost(BlogPost blogPost);
 
   // READ
   Future<bool> isAdmin(String uid);
@@ -42,6 +44,21 @@ class FirestoreDatabase implements Database {
   @override
   Future<String> putFile(String filePath) async {
     return await _storage.putFile(filePath);
+  }
+
+  @override
+  Future<void> deleteBlogPost(BlogPost blogPost) {
+    return _service.deleteData(path: APIPath.blogPost(blogPost.id));
+  }
+
+  @override
+  void deleteImagesFromBlogPost(BlogPost blogPost) {
+    var imagePaths = blogPost.imageUrls;
+    if (imagePaths.isNotEmpty) {
+      for (String path in imagePaths) {
+        _storage.deleteFile(path);
+      }
+    }
   }
 
   @override

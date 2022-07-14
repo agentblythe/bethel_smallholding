@@ -19,4 +19,11 @@ class StorageService {
     await reference.putFile(file);
     return await reference.getDownloadURL();
   }
+
+  Future<void> deleteFile(String filePath) async {
+    FirebaseStorage _storage = FirebaseStorage.instance;
+
+    Reference reference = _storage.refFromURL(filePath);
+    await reference.delete();
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:bethel_smallholding/app/home/blog/edit_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/blog/blog_post_tile.dart';
-import 'package:bethel_smallholding/app/home/blog/empty_blog.dart';
+import 'package:bethel_smallholding/app/home/blog/list_items_builder.dart';
 import 'package:bethel_smallholding/app/home/blog/view_blog_post_page.dart';
 import 'package:bethel_smallholding/app/home/models/blog_post.dart';
 import 'package:bethel_smallholding/common_widgets/show_alert_dialog.dart';
@@ -95,33 +95,17 @@ class BlogPage extends StatelessWidget {
     return StreamBuilder<List<BlogPost>>(
       stream: database.blogPostsStream(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final blogPosts = snapshot.data;
-          if (blogPosts == null || blogPosts.isEmpty) {
-            return const EmptyBlog();
-          }
-
-          final children = blogPosts
-              .map(
-                (blogPost) => BlogPostTile(
-                  blogPost: blogPost,
-                  onTap: () => ViewBlogPostPage.show(context, blogPost),
-                  onLongPress: () => isAdmin
-                      ? EditBlogPostPage.show(context, blogPost: blogPost)
-                      : null,
-                ),
-              )
-              .toList();
-          return ListView(
-            children: children,
-          );
-        }
-        if (snapshot.hasError) {
-          var error = snapshot.error.toString();
-          return Center(child: Text("Some error occurred : $error"));
-        }
-        return const Center(
-          child: CircularProgressIndicator(),
+        return ListItemsBuilder<BlogPost>(
+          snapshot: snapshot,
+          itemBuilder: (context, blogPost) {
+            return BlogPostTile(
+              blogPost: blogPost,
+              onTap: () => ViewBlogPostPage.show(context, blogPost),
+              onLongPress: () => isAdmin
+                  ? EditBlogPostPage.show(context, blogPost: blogPost)
+                  : null,
+            );
+          },
         );
       },
     );

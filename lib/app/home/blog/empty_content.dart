@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class EmptyBlog extends StatelessWidget {
+class EmptyContent extends StatelessWidget {
   final String title;
   final String message;
 
-  const EmptyBlog(
+  const EmptyContent(
       {Key? key,
       this.title = "Nothing here!",
       this.message = "There are no blog posts yet"})

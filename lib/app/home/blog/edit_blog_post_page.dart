@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+// TODO: This class does not handle adding images to an existing blog post
+
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
   final BlogPostModel model;

@@ -48,6 +48,7 @@ class FirestoreDatabase implements Database {
 
   @override
   Future<void> deleteBlogPost(BlogPost blogPost) {
+    deleteImagesFromBlogPost(blogPost);
     return _service.deleteData(path: APIPath.blogPost(blogPost.id));
   }
 

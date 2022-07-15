@@ -28,7 +28,7 @@ class ViewBlogPostPage extends StatelessWidget {
 
   Widget _buildImagesView() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
@@ -37,21 +37,18 @@ class ViewBlogPostPage extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: blogPost.imageUrls.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              alignment: Alignment.center,
-              child: Image.network(
-                blogPost.imageUrls[index],
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) {
-                    return child;
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+          return Container(
+            alignment: Alignment.center,
+            child: Image.network(
+              blogPost.imageUrls[index],
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           );
         },

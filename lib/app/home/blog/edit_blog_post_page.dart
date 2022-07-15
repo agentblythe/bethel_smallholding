@@ -9,8 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-// TODO: This class does not handle adding images to an existing blog post
-
 class EditBlogPostPage extends StatefulWidget {
   final Database database;
   final BlogPostModel model;
@@ -69,28 +67,15 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
 
   BlogPostModel get model => widget.model;
 
-  //List<String> localImageUrls = [];
-
   Future<void> _submitForm() async {
     model.updateWith(submittedTapped: true, submitting: true);
 
     if (_validateAndSaveForm()) {
       if (model.tempImageUrls.isNotEmpty) {
-        //var storageService = StorageService.instance;
-        //FirebaseStorage _storage = FirebaseStorage.instance;
-
         for (var localImageUrl in model.tempImageUrls) {
           var remoteURL = await widget.database.putFile(localImageUrl);
           model.addImageUrl(remoteURL);
-
-          //String id = const Uuid().v4();
-          //Reference reference = _storage.ref().child("blog_post_images/$id");
-          //var file = File(localImageUrl);
-          //await reference.putFile(file);
-          //var url = await reference.getDownloadURL();
-          //model.addImageUrl(url);
         }
-        model.tempImageUrls.clear();
       }
 
       final blogPost = BlogPost(
@@ -127,6 +112,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
         );
       } finally {
         model.updateWith(submitting: false);
+        model.tempImageUrls.clear();
       }
     }
   }
@@ -234,15 +220,12 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
     );
   }
 
-  List<String> get _images => widget.blogPost == null
-      ? model.tempImageUrls
-      : widget.blogPost!.imageUrls;
-
   List<Widget> _buildChildren() {
     return [
       _buildTitleTextField(),
       _buildContentTextField(),
-      if (_images.isNotEmpty) _buildImagesField(),
+      if (widget.blogPost != null) _buildExistingImagesField(),
+      if (model.tempImageUrls.isNotEmpty) _buildNewImagesField(),
     ];
   }
 
@@ -281,33 +264,90 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
     );
   }
 
-  Widget _buildImagesField() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 4, 0, 0),
-      child: GridView.builder(
+  Widget _buildExistingImagesField() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            Text(
+              "Images already attached to post:",
+            ),
+          ],
+        ),
+        _buildExistingImagesGrid(),
+      ],
+    );
+  }
+
+  Widget _buildExistingImagesGrid() {
+    if (widget.blogPost != null && widget.blogPost!.imageUrls.isNotEmpty) {
+      return GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200,
         ),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: _images.length,
+        itemCount: widget.blogPost!.imageUrls.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              alignment: Alignment.center,
-              child: widget.blogPost == null
-                  ? Image.file(
-                      File(model.tempImageUrls[index]),
-                    )
-                  : Image.network(
-                      widget.blogPost!.imageUrls[index],
-                    ),
+          return Container(
+            alignment: Alignment.center,
+            child: Image.network(
+              widget.blogPost!.imageUrls[index],
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
             ),
           );
         },
-      ),
+      );
+    }
+    return Container();
+  }
+
+  Widget _buildNewImagesField() {
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: const [
+            Text(
+              "Images to be attached to post:",
+            ),
+          ],
+        ),
+        _buildNewImagesGrid(),
+      ],
     );
+  }
+
+  Widget _buildNewImagesGrid() {
+    if (model.tempImageUrls.isNotEmpty) {
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+        ),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: model.tempImageUrls.length,
+        itemBuilder: (context, index) {
+          return Container(
+            alignment: Alignment.center,
+            child: Image(
+              image: Image.file(File(model.tempImageUrls[index])).image,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          );
+        },
+      );
+    }
+    return Container();
   }
 
   void _titleEditingComplete() {

@@ -22,9 +22,7 @@ class StorageService {
 
   Future<void> deleteFile(String filePath) async {
     FirebaseStorage _storage = FirebaseStorage.instance;
-
     Reference reference = _storage.refFromURL(filePath);
-
     await reference.delete();
   }
 }

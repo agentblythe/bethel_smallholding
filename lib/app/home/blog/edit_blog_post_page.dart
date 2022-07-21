@@ -174,7 +174,7 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
             ),
             if (widget.blogPost != null)
               IconButton(
-                onPressed: model.submitting ? null : () {},
+                onPressed: model.submitting ? null : _deleteBlogPost,
                 icon: const Icon(Icons.delete),
                 color: Colors.red[600],
               ),
@@ -183,6 +183,23 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
       ],
       backgroundColor: Colors.grey[200],
     );
+  }
+
+  Future<void> _deleteBlogPost() async {
+    if (widget.blogPost != null) {
+      try {
+        final db = widget.database;
+        await db.deleteBlogPost(widget.blogPost!);
+
+        Navigator.of(context).pop();
+      } on FirebaseException catch (e) {
+        showExceptionAlertDialog(
+          context,
+          title: "Operation Failed",
+          exception: e,
+        );
+      }
+    }
   }
 
   void _getImage(ImageSource source) async {

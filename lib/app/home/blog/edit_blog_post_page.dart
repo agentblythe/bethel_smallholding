@@ -313,7 +313,12 @@ class _EditBlogPostPageState extends State<EditBlogPostPage> {
             child: Image.network(
               widget.blogPost!.imageUrls[index],
               loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
+                if (loadingProgress == null) {
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
+                    child: child,
+                  );
+                }
                 return const Center(child: CircularProgressIndicator());
               },
             ),

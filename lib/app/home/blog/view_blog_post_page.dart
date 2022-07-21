@@ -43,7 +43,10 @@ class ViewBlogPostPage extends StatelessWidget {
               blogPost.imageUrls[index],
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
-                  return child;
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(4.0, 0, 4.0, 0),
+                    child: child,
+                  );
                 }
                 return const Center(
                   child: CircularProgressIndicator(),

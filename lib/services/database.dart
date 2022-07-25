@@ -12,6 +12,7 @@ abstract class Database {
   // READ
   Future<bool> isAdmin(String uid);
   Stream<List<BlogPost>> blogPostsStream();
+  Stream<BlogPost> blogPostStream({required String blogPostId});
 }
 
 String documentIDFromCurrentDate() => DateTime.now().toIso8601String();
@@ -60,6 +61,13 @@ class FirestoreDatabase implements Database {
   @override
   Stream<List<BlogPost>> blogPostsStream() => _service.collectionStream(
         path: APIPath.blogPosts,
+        builder: (data, documentID) => BlogPost.fromMap(data, documentID),
+      );
+
+  @override
+  Stream<BlogPost> blogPostStream({required String blogPostId}) =>
+      _service.documentStream(
+        path: APIPath.blogPost(blogPostId),
         builder: (data, documentID) => BlogPost.fromMap(data, documentID),
       );
 }

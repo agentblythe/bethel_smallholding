@@ -16,29 +16,6 @@ class BlogPage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      await auth.signOut();
-    } catch (e) {
-      debugPrint("Sign-out failed with exception: ${e.toString()}");
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-      context,
-      title: "Sign out confirmation",
-      content: "Are you sure you want to sign out?",
-      defaultAction: AlertAction(text: "Sign out", destructive: true),
-      cancelAction: AlertAction(text: "Cancel"),
-    );
-
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
@@ -63,26 +40,16 @@ class BlogPage extends StatelessWidget {
               title: _blogTitle,
               elevation: 2.0,
               actions: <Widget>[
-                TextButton(
-                  onPressed: () => _confirmSignOut(context),
-                  child: const Text(
-                    "Sign out",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white,
-                    ),
+                Visibility(
+                  child: IconButton(
+                    onPressed: () => EditBlogPostPage.show(context),
+                    icon: const Icon(Icons.add),
                   ),
-                )
+                  visible: snapshot.data == true,
+                ),
               ],
             ),
             body: _buildContents(context, snapshot.data == true),
-            floatingActionButton: Visibility(
-              child: FloatingActionButton(
-                child: const Icon(Icons.add),
-                onPressed: () => EditBlogPostPage.show(context),
-              ),
-              visible: snapshot.data == true,
-            ),
           );
         }
       },

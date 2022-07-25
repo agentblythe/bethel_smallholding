@@ -29,7 +29,7 @@ class EditBlogPostPage extends StatefulWidget {
     // the widget tree at MaterialApp level
     final database = Provider.of<Database>(context, listen: false);
 
-    await Navigator.of(context).push(
+    await Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) {
           return ChangeNotifierProvider<BlogPostModel>(

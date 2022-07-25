@@ -1,4 +1,5 @@
 import 'package:bethel_smallholding/app/home/blog/blog_page.dart';
+import 'package:bethel_smallholding/app/home/home_page.dart';
 import 'package:bethel_smallholding/app/sign_in/sign_in_page.dart';
 import 'package:bethel_smallholding/services/auth.dart';
 import 'package:bethel_smallholding/services/database.dart';
@@ -25,7 +26,7 @@ class LandingPage extends StatelessWidget {
           }
           return Provider<Database>(
             create: (_) => FirestoreDatabase(),
-            child: const BlogPage(),
+            child: HomePage(),
           );
         }
         return const Scaffold(
